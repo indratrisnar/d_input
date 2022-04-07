@@ -11,7 +11,7 @@ D'Input is a package that provide input widget to build faster input with defaul
 
 ## Screenshot
 <img src="https://github.com/indratrisnar/d_input/raw/master/pic/d_input1.png" alt="d_input1" width="240">
-<img src="https://github.com/indratrisnar/d_input/raw/master/pic/d_input2.png" alt="d_input2" height="240">
+<img src="https://github.com/indratrisnar/d_input/raw/master/pic/d_input2.png" alt="d_input2" width="240">
 
 ## Usage
 
