@@ -1,7 +1,7 @@
 name: d_input
-description: A new Flutter package project.
+description: Build faster input with default border style
 version: 0.0.1
-homepage:
+homepage: https://github.com/indratrisnar/d_input
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
