@@ -76,8 +76,8 @@ class DInput extends StatelessWidget {
           validator: validator,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           keyboardType: inputType,
-          minLines: minLine,
-          maxLines: maxLine,
+          minLines: minLine ?? 1,
+          maxLines: maxLine ?? 1,
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
             isDense: true,

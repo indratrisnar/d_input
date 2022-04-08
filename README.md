@@ -41,7 +41,7 @@ DInput(
 ```
 
 ## Tutorial :
-Soon
+[Watch](https://youtu.be/x457Q5tl_Lk)
 
 ## Support :
 Support me for more feature & packages
