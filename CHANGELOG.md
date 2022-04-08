@@ -1,6 +1,7 @@
 ## 0.0.2
 
-add tutorial
+- add tutorial
+- set default 1 line
 
 ## 0.0.1
 
