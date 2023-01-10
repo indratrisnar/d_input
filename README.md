@@ -7,6 +7,7 @@ D'Input is a package that provide input widget to build faster input with defaul
 - Input Title
 - Input Validator
 - Input Area
+- Input Password
 - Some Style
 
 ## Screenshot
@@ -37,6 +38,15 @@ DInput(
     maxLine: 4,
     minLine: 1,
     hint: 'Area',
+),
+
+DInputPassword(            
+    controller: TextEditingController(),
+),
+
+DInputPassword(            
+    controller: TextEditingController(),
+    obsecureCharacter: 'x',
 ),
 ```
 
