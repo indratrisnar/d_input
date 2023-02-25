@@ -1,4 +1,5 @@
 library d_input;
+
 import 'package:flutter/material.dart';
 
 typedef DValidator = String? Function(String? input);
@@ -22,6 +23,7 @@ class DInput extends StatelessWidget {
     this.onTap,
     this.onChanged,
     this.spaceTitle,
+    this.fillColor,
   }) : super(key: key);
 
   /// controller for input
@@ -64,6 +66,10 @@ class DInput extends StatelessWidget {
   /// space beetween input and title text
   /// default: 8
   final double? spaceTitle;
+
+  /// color for input background
+  final Color? fillColor;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -97,7 +103,12 @@ class DInput extends StatelessWidget {
           onTap: onTap,
           onChanged: onChanged,
           decoration: InputDecoration(
-            border: const OutlineInputBorder(),
+            fillColor: fillColor,
+            filled: fillColor != null,
+            border: OutlineInputBorder(
+              borderSide:
+                  fillColor != null ? BorderSide.none : const BorderSide(),
+            ),
             isDense: true,
             hintText: hint,
             label: title != null
@@ -141,6 +152,7 @@ class DInputPassword extends StatefulWidget {
     this.onChanged,
     this.spaceTitle,
     this.obsecureCharacter,
+    this.fillColor,
   }) : super(key: key);
 
   /// controller for input
@@ -186,6 +198,9 @@ class DInputPassword extends StatefulWidget {
 
   // character which show when obsecure is active to hide real character
   final String? obsecureCharacter;
+
+  /// color for input background
+  final Color? fillColor;
 
   @override
   State<DInputPassword> createState() => _DInputPasswordState();
@@ -236,7 +251,13 @@ class _DInputPasswordState extends State<DInputPassword> {
               },
               icon: Icon(isObsecure ? Icons.visibility_off : Icons.visibility),
             ),
-            border: const OutlineInputBorder(),
+            fillColor: widget.fillColor,
+            filled: widget.fillColor != null,
+            border: OutlineInputBorder(
+              borderSide: widget.fillColor != null
+                  ? BorderSide.none
+                  : const BorderSide(),
+            ),
             isDense: true,
             hintText: widget.hint,
             label: widget.title != null

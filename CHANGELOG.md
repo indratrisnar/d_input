@@ -1,3 +1,7 @@
+## 0.0.8
+
+- add property fillColor
+
 ## 0.0.7
 
 - add widget input password
