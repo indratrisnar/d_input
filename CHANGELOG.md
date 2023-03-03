@@ -1,3 +1,7 @@
+## 0.0.9
+
+- add property radius for border
+
 ## 0.0.8
 
 - add property fillColor

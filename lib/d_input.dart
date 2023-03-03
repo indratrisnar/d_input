@@ -24,6 +24,7 @@ class DInput extends StatelessWidget {
     this.onChanged,
     this.spaceTitle,
     this.fillColor,
+    this.radius,
   }) : super(key: key);
 
   /// controller for input
@@ -70,6 +71,11 @@ class DInput extends StatelessWidget {
   /// color for input background
   final Color? fillColor;
 
+  /// radius for corner\
+  /// default:\
+  /// const BorderRadius.all(Radius.circular(4.0))
+  final BorderRadius? radius;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -108,6 +114,8 @@ class DInput extends StatelessWidget {
             border: OutlineInputBorder(
               borderSide:
                   fillColor != null ? BorderSide.none : const BorderSide(),
+              borderRadius:
+                  radius ?? const BorderRadius.all(Radius.circular(4.0)),
             ),
             isDense: true,
             hintText: hint,
@@ -153,6 +161,7 @@ class DInputPassword extends StatefulWidget {
     this.spaceTitle,
     this.obsecureCharacter,
     this.fillColor,
+    this.radius,
   }) : super(key: key);
 
   /// controller for input
@@ -201,6 +210,11 @@ class DInputPassword extends StatefulWidget {
 
   /// color for input background
   final Color? fillColor;
+
+  /// radius for corner\
+  /// default:\
+  /// const BorderRadius.all(Radius.circular(4.0))
+  final BorderRadius? radius;
 
   @override
   State<DInputPassword> createState() => _DInputPasswordState();
@@ -257,6 +271,8 @@ class _DInputPasswordState extends State<DInputPassword> {
               borderSide: widget.fillColor != null
                   ? BorderSide.none
                   : const BorderSide(),
+              borderRadius:
+                  widget.radius ?? const BorderRadius.all(Radius.circular(4.0)),
             ),
             isDense: true,
             hintText: widget.hint,
