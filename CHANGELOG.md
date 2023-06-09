@@ -1,3 +1,7 @@
+## 0.1.0
+
+- add property contentPadding
+
 ## 0.0.9
 
 - add property radius for border
