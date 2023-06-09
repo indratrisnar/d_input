@@ -25,6 +25,7 @@ class DInput extends StatelessWidget {
     this.spaceTitle,
     this.fillColor,
     this.radius,
+    this.contentPadding = const EdgeInsets.fromLTRB(16, 12, 16, 12),
   }) : super(key: key);
 
   /// controller for input
@@ -75,6 +76,10 @@ class DInput extends StatelessWidget {
   /// default:\
   /// const BorderRadius.all(Radius.circular(4.0))
   final BorderRadius? radius;
+
+  /// padding input text to side of box input\
+  /// default: const EdgeInsets.fromLTRB(16, 12, 16, 12)
+  final EdgeInsetsGeometry? contentPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +140,7 @@ class DInput extends StatelessWidget {
                             ),
                         ],
                       ),
+            contentPadding: contentPadding,
           ),
         ),
       ],
@@ -162,6 +168,7 @@ class DInputPassword extends StatefulWidget {
     this.obsecureCharacter,
     this.fillColor,
     this.radius,
+    this.contentPadding = const EdgeInsets.fromLTRB(16, 12, 16, 12),
   }) : super(key: key);
 
   /// controller for input
@@ -215,6 +222,10 @@ class DInputPassword extends StatefulWidget {
   /// default:\
   /// const BorderRadius.all(Radius.circular(4.0))
   final BorderRadius? radius;
+
+  /// padding input text to side of box input\
+  /// default: const EdgeInsets.fromLTRB(16, 12, 16, 12)
+  final EdgeInsetsGeometry? contentPadding;
 
   @override
   State<DInputPassword> createState() => _DInputPasswordState();
@@ -293,6 +304,7 @@ class _DInputPasswordState extends State<DInputPassword> {
                             ),
                         ],
                       ),
+            contentPadding: widget.contentPadding,
           ),
         ),
       ],
