@@ -1,3 +1,7 @@
+## 0.1.1
+
+- add property custom style input text
+
 ## 0.1.0
 
 - add property contentPadding
