@@ -1,3 +1,7 @@
+## 0.1.2
+
+- add autofocus property
+
 ## 0.1.1
 
 - add property custom style input text

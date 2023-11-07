@@ -27,6 +27,7 @@ class DInput extends StatelessWidget {
     this.radius,
     this.contentPadding = const EdgeInsets.fromLTRB(16, 12, 16, 12),
     this.style,
+    this.autofocus = false,
   }) : super(key: key);
 
   /// controller for input
@@ -85,6 +86,12 @@ class DInput extends StatelessWidget {
   /// style custom input text
   final TextStyle? style;
 
+  /// Default: false\
+  /// Creates a [FormField] that contains a [TextField].\
+  /// When a [controller] is specified, [initialValue] must be null (the default). If [controller] is null, then a [TextEditingController] will be constructed automatically and its text will be initialized to [initialValue] or the empty string.\
+  /// For documentation about the various parameters, see the [TextField] class and [TextField.new], the constructor.
+  final bool autofocus;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -118,6 +125,7 @@ class DInput extends StatelessWidget {
           onTap: onTap,
           onChanged: onChanged,
           style: style,
+          autofocus: autofocus,
           decoration: InputDecoration(
             fillColor: fillColor,
             filled: fillColor != null,
@@ -175,6 +183,7 @@ class DInputPassword extends StatefulWidget {
     this.radius,
     this.contentPadding = const EdgeInsets.fromLTRB(16, 12, 16, 12),
     this.style,
+    this.autofocus = false,
   }) : super(key: key);
 
   /// controller for input
@@ -236,6 +245,12 @@ class DInputPassword extends StatefulWidget {
   /// style custom input text
   final TextStyle? style;
 
+  /// Default: false\
+  /// Creates a [FormField] that contains a [TextField].\
+  /// When a [controller] is specified, [initialValue] must be null (the default). If [controller] is null, then a [TextEditingController] will be constructed automatically and its text will be initialized to [initialValue] or the empty string.\
+  /// For documentation about the various parameters, see the [TextField] class and [TextField.new], the constructor.
+  final bool autofocus;
+
   @override
   State<DInputPassword> createState() => _DInputPasswordState();
 }
@@ -277,6 +292,7 @@ class _DInputPasswordState extends State<DInputPassword> {
           onChanged: widget.onChanged,
           style: widget.style,
           obscuringCharacter: widget.obsecureCharacter ?? '●',
+          autofocus: widget.autofocus,
           decoration: InputDecoration(
             suffixIcon: IconButton(
               onPressed: () {
