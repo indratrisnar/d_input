@@ -1,3 +1,7 @@
+## 0.1.3
+
+- add property `textAlign`
+
 ## 0.1.2
 
 - add autofocus property

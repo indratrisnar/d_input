@@ -28,6 +28,7 @@ class DInput extends StatelessWidget {
     this.contentPadding = const EdgeInsets.fromLTRB(16, 12, 16, 12),
     this.style,
     this.autofocus = false,
+    this.textAlign = TextAlign.start,
   }) : super(key: key);
 
   /// controller for input
@@ -92,6 +93,10 @@ class DInput extends StatelessWidget {
   /// For documentation about the various parameters, see the [TextField] class and [TextField.new], the constructor.
   final bool autofocus;
 
+  /// align input\
+  /// default: start
+  final TextAlign textAlign;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -124,6 +129,7 @@ class DInput extends StatelessWidget {
           maxLines: maxLine ?? 1,
           onTap: onTap,
           onChanged: onChanged,
+          textAlign: textAlign,
           style: style,
           autofocus: autofocus,
           decoration: InputDecoration(
@@ -184,6 +190,7 @@ class DInputPassword extends StatefulWidget {
     this.contentPadding = const EdgeInsets.fromLTRB(16, 12, 16, 12),
     this.style,
     this.autofocus = false,
+    this.textAlign = TextAlign.start,
   }) : super(key: key);
 
   /// controller for input
@@ -251,6 +258,10 @@ class DInputPassword extends StatefulWidget {
   /// For documentation about the various parameters, see the [TextField] class and [TextField.new], the constructor.
   final bool autofocus;
 
+  /// align input\
+  /// default: start
+  final TextAlign textAlign;
+
   @override
   State<DInputPassword> createState() => _DInputPasswordState();
 }
@@ -290,6 +301,7 @@ class _DInputPasswordState extends State<DInputPassword> {
           maxLines: widget.maxLine ?? 1,
           onTap: widget.onTap,
           onChanged: widget.onChanged,
+          textAlign: widget.textAlign,
           style: widget.style,
           obscuringCharacter: widget.obsecureCharacter ?? '●',
           autofocus: widget.autofocus,
