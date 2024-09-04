@@ -1,3 +1,10 @@
+## 0.1.4
+
+- remove typedef
+- upgrade base sdk:
+  - sdk: ^3.5.1
+  - flutter: ">=3.24.1"
+
 ## 0.1.3
 
 - add property `textAlign`

@@ -2,10 +2,6 @@ library d_input;
 
 import 'package:flutter/material.dart';
 
-typedef DValidator = String? Function(String? input);
-typedef OnChange = void Function(String? value);
-typedef OnTap = void Function();
-
 /// simple input with full border default
 /// to styling the input decoration, use theme in the main
 class DInput extends StatelessWidget {
@@ -51,13 +47,13 @@ class DInput extends StatelessWidget {
 
   /// input validator
   /// to activate validator, wrap input with 'Form widget'
-  final DValidator? validator;
+  final String? Function(String? input)? validator;
 
   /// get realtime value from input
-  final OnChange? onChanged;
+  final void Function(String? value)? onChanged;
 
   /// action tap input
-  final OnTap? onTap;
+  final void Function()? onTap;
 
   /// type for the input, like number
   final TextInputType? inputType;
@@ -213,13 +209,13 @@ class DInputPassword extends StatefulWidget {
 
   /// input validator
   /// to activate validator, wrap input with 'Form widget'
-  final DValidator? validator;
+  final String? Function(String? input)? validator;
 
   /// get realtime value from input
-  final OnChange? onChanged;
+  final void Function(String? value)? onChanged;
 
   /// action tap input
-  final OnTap? onTap;
+  final void Function()? onTap;
 
   /// type for the input, like number
   final TextInputType? inputType;
