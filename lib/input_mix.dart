@@ -6,7 +6,7 @@ class DInputMix extends StatelessWidget {
     required this.controller,
     this.boxRadius = 20,
     this.boxBorder,
-    this.boxColor = Colors.white,
+    this.boxColor,
     this.inputPadding = const EdgeInsets.symmetric(
       horizontal: 20,
       vertical: 16,
@@ -55,7 +55,9 @@ class DInputMix extends StatelessWidget {
   final BoxBorder? boxBorder;
 
   /// background color
-  final Color boxColor;
+  ///
+  /// default: Theme.of(context).colorScheme.surfaceContainer
+  final Color? boxColor;
 
   /// contentPadding inside InputDecoration
   final EdgeInsetsGeometry inputPadding;
@@ -149,7 +151,7 @@ class DInputMix extends StatelessWidget {
           ),
         DecoratedBox(
           decoration: BoxDecoration(
-            color: boxColor,
+            color: boxColor ?? Theme.of(context).colorScheme.surfaceContainer,
             borderRadius: BorderRadius.circular(boxRadius),
             border: newBoxBorder,
           ),

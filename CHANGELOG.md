@@ -1,3 +1,8 @@
+## 0.2.1
+
+- DInputMix
+  - boxColor: Theme.of(context).colorScheme.surfaceContainer
+
 ## 0.2.0
 
 - Add New Widget: DInputMix
