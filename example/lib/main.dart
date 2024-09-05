@@ -60,6 +60,9 @@ class _TestDInputState extends State<TestDInput> {
           DInputMix(
             controller: controller1,
             hint: 'sample mix 1',
+            inputOnFieldSubmitted: (value) {
+              print('submit: $value');
+            },
           ),
           const SizedBox(height: 20),
           DInputMix(
@@ -157,7 +160,7 @@ class _TestDInputState extends State<TestDInput> {
               icon: Icons.email,
               color: Colors.green,
               alignment: Alignment(0.3, 0),
-              boxSize: Size(40, 48),
+              boxSize: Size(40, 56),
             ),
           ),
           const SizedBox(height: 20),
