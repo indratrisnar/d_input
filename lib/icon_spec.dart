@@ -18,7 +18,7 @@ class IconSpec {
     this.alignment = Alignment.center,
     this.color,
     this.iconSize = 24,
-    this.boxSize = const Size(56, 48),
+    this.boxSize = const Size(56, 56),
     this.onTap,
     this.radius,
     this.splashColor,

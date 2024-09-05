@@ -9,7 +9,7 @@ class DInputMix extends StatelessWidget {
     this.boxColor = Colors.white,
     this.inputPadding = const EdgeInsets.symmetric(
       horizontal: 20,
-      vertical: 14,
+      vertical: 16,
     ),
     this.inputMargin = const EdgeInsets.all(0),
     this.inputStyle,
@@ -35,35 +35,94 @@ class DInputMix extends StatelessWidget {
     this.suffixIcon = const IconSpec(),
   });
 
+  /// controll input
   final TextEditingController controller;
+
+  /// radius for all corner (box wrapper)
+  ///
+  /// default: 20
   final double boxRadius;
+
+  /// styling for box border
+  ///
+  /// default:
+  /// ```dart
+  /// Border.all(
+  ///   color: Theme.of(context).primaryColor,
+  ///   width: 2,
+  /// )
+  /// ```
   final BoxBorder? boxBorder;
+
+  /// background color
   final Color boxColor;
+
+  /// contentPadding inside InputDecoration
   final EdgeInsetsGeometry inputPadding;
+
+  /// space to out, from TextFormField (input)
   final EdgeInsetsGeometry inputMargin;
+
+  /// style input text
   final TextStyle? inputStyle;
+
+  /// background color for TextFormField (input)
   final Color? inputBackgroundColor;
+
+  /// radius for TextFormField (input)
   final double inputRadius;
+
+  /// border style inside InputDecoration
   final BorderSide inputBorderSide;
+
+  /// when user tap TextFormField (input)
   final void Function()? inputOnTap;
+
+  /// listen changes from TextFormField (input)
   final void Function(String value)? inputOnChanged;
+
+  /// when user submit input
   final void Function(String value)? inputOnFieldSubmitted;
+
+  /// handle focus
   final FocusNode? inputFocusNode;
+
+  /// hint TextFormField
   final String? hint;
+
+  /// styling hint text
   final TextStyle hintStyle;
+
+  /// arrange title and box input
   final CrossAxisAlignment crossAxisAlignment;
+
+  /// for text area, combine with `maxLine`
   final int minLine;
+
+  /// for text area, combine with `minLine`
   final int maxLine;
+
+  /// show text title above box input
   final String? title;
+
+  /// styling `title`
   final TextStyle titleStyle;
+
+  /// give space between title and box input
   final double titleGap;
+
+  /// Icon on left
   final IconSpec prefixIcon;
+
+  /// Icon on right
   final IconSpec suffixIcon;
 
   ///```dart
   /// ●, •, ♦,
   ///```
   final String obscureChar;
+
+  /// hide char or not
   final bool obscure;
 
   @override
