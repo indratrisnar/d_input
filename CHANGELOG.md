@@ -1,3 +1,8 @@
+## 0.2.2
+
+- DInputMix
+  - controller: nullable
+
 ## 0.2.1
 
 - DInputMix

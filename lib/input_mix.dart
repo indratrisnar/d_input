@@ -3,7 +3,7 @@ part of 'd_input.dart';
 class DInputMix extends StatelessWidget {
   const DInputMix({
     super.key,
-    required this.controller,
+    this.controller,
     this.boxRadius = 20,
     this.boxBorder,
     this.boxColor,
@@ -36,7 +36,7 @@ class DInputMix extends StatelessWidget {
   });
 
   /// controll input
-  final TextEditingController controller;
+  final TextEditingController? controller;
 
   /// radius for all corner (box wrapper)
   ///
