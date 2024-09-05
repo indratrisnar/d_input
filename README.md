@@ -9,11 +9,12 @@ D'Input is a package that provide input widget to build faster input with defaul
 - Input Area
 - Input Password
 - Some Style
+- DInputMix (Recommended Widget)
 
 ## Screenshot
 
-<img src="https://github.com/indratrisnar/d_input/raw/master/pic/1.png" alt="d_input1" width="300">
-<img src="https://github.com/indratrisnar/d_input/raw/master/pic/2.png" alt="d_input2" width="300">
+<img src="https://raw.githubusercontent.com/indratrisnar/d_input/master/pic/1.png" alt="d_input1" width="240">
+<img src="https://raw.githubusercontent.com/indratrisnar/d_input/master/pic/2.png" alt="d_input2" width="240">
 
 ## Usage
 
