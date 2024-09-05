@@ -10,81 +10,210 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text("D'Input"),
-        ),
-        body: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            DInput(
-              controller: TextEditingController(),
+      home: TestDInput(),
+    );
+  }
+}
+
+class TestDInput extends StatefulWidget {
+  const TestDInput({super.key});
+
+  @override
+  State<TestDInput> createState() => _TestDInputState();
+}
+
+class _TestDInputState extends State<TestDInput> {
+  final controller1 = TextEditingController();
+  final controller2 = TextEditingController();
+  final controller3 = TextEditingController();
+  final controller4 = TextEditingController();
+  final controller5 = TextEditingController();
+  final controller6 = TextEditingController();
+  final controller7 = TextEditingController();
+  final controller8 = TextEditingController();
+  final controller9 = TextEditingController();
+  final controller10 = TextEditingController();
+  final controller11 = TextEditingController();
+  bool obscure = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('D Input'),
+        centerTitle: true,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(20),
+        children: [
+          DInput(
+            controller: TextEditingController(),
+          ),
+          const SizedBox(height: 20),
+          DInputPassword(
+            controller: TextEditingController(),
+          ),
+          const SizedBox(height: 20),
+          DInputMix(
+            controller: controller1,
+            hint: 'sample mix 1',
+          ),
+          const SizedBox(height: 20),
+          DInputMix(
+            controller: controller2,
+            title: 'Description',
+            hint: 'sample mix 2',
+            minLine: 3,
+            maxLine: 5,
+          ),
+          const SizedBox(height: 20),
+          DInputMix(
+            controller: controller3,
+            hint: 'sample mix 3',
+            boxColor: Theme.of(context).primaryColor.withOpacity(0.4),
+            hintStyle: const TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+              color: Colors.white,
             ),
-            const SizedBox(height: 16),
-            DInput(
-              controller: TextEditingController(),
-              hint: 'Hint 2',
+            inputStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+              color: Colors.white,
             ),
-            const SizedBox(height: 16),
-            DInput(
-              controller: TextEditingController(),
-              hint: 'Hint 3',
-              label: 'Label 3',
+          ),
+          const SizedBox(height: 20),
+          DInputMix(
+            controller: controller4,
+            hint: 'sample mix 4',
+            boxRadius: 8,
+            boxBorder: Border.all(
+              width: 2,
+              color: Colors.green,
             ),
-            const SizedBox(height: 16),
-            DInput(
-              controller: TextEditingController(),
-              hint: 'Hint 4',
-              label: 'Label 4',
-              isRequired: true,
+          ),
+          const SizedBox(height: 20),
+          DInputMix(
+            controller: controller5,
+            hint: 'sample mix 5',
+            prefixIcon: IconSpec(
+              icon: Icons.email,
+              onTap: () => print('Icons.email'),
             ),
-            const SizedBox(height: 16),
-            DInput(
-              controller: TextEditingController(),
-              hint: 'Hint 5',
-              label: 'Label 5',
-              isRequired: true,
-              title: 'Title 5',
+            suffixIcon: IconSpec(
+              icon: Icons.verified,
+              onTap: () => print('Icons.verified'),
             ),
-            const SizedBox(height: 16),
-            DInput(
-              controller: TextEditingController(),
-              hint: 'Hint 6',
-              title: 'Title 6',
+          ),
+          const SizedBox(height: 20),
+          DInputMix(
+            controller: controller6,
+            hint: 'sample mix 6',
+            inputPadding: const EdgeInsets.symmetric(vertical: 16),
+            prefixIcon: const IconSpec(
+              icon: Icons.email,
+              color: Colors.green,
             ),
-            const SizedBox(height: 16),
-            DInput(
-              controller: TextEditingController(),
-              hint: 'Hint 7',
-              title: 'Title 7',
-              inputType: TextInputType.number,
+            suffixIcon: const IconSpec(
+              icon: Icons.verified,
+              color: Colors.blue,
             ),
-            const SizedBox(height: 16),
-            DInput(
-              controller: TextEditingController(),
-              label: 'Label 8',
-              validator: (value) => value == '' ? "Don't empty" : null,
+          ),
+          const SizedBox(height: 20),
+          DInputMix(
+            controller: controller7,
+            hint: 'sample mix 7',
+            inputPadding: const EdgeInsets.symmetric(
+              vertical: 8,
+              horizontal: 12,
             ),
-            const SizedBox(height: 16),
-            DInput(
-              isRequired: true,
-              controller: TextEditingController(),
-              maxLine: 4,
-              minLine: 1,
-              hint: 'Area',
+            inputMargin: const EdgeInsets.symmetric(vertical: 8),
+            inputBackgroundColor: Colors.amber.withOpacity(0.3),
+            inputRadius: 10,
+            prefixIcon: const IconSpec(
+              icon: Icons.email,
+              color: Colors.green,
             ),
-            const SizedBox(height: 16),
-            DInput(
-              controller: TextEditingController(),
-              maxLine: 10,
-              minLine: 5,
-              label: 'Description',
+            suffixIcon: const IconSpec(
+              icon: Icons.verified,
+              color: Colors.blue,
             ),
-            const SizedBox(height: 16),
-          ],
-        ),
+          ),
+          const SizedBox(height: 20),
+          DInputMix(
+            controller: controller8,
+            hint: 'sample mix 8',
+            inputPadding: const EdgeInsets.symmetric(
+              vertical: 8,
+              horizontal: 12,
+            ),
+            inputMargin: const EdgeInsets.fromLTRB(0, 8, 8, 8),
+            inputBackgroundColor: Colors.amber.withOpacity(0.3),
+            inputRadius: 12,
+            prefixIcon: const IconSpec(
+              icon: Icons.email,
+              color: Colors.green,
+              alignment: Alignment(0.3, 0),
+              boxSize: Size(40, 48),
+            ),
+          ),
+          const SizedBox(height: 20),
+          DInputMix(
+            controller: controller9,
+            hint: 'sample mix 9',
+            minLine: 3,
+            maxLine: 3,
+            inputPadding: const EdgeInsets.symmetric(
+              vertical: 8,
+              horizontal: 12,
+            ),
+            inputMargin: const EdgeInsets.symmetric(vertical: 8),
+            inputBackgroundColor: Colors.grey.withOpacity(0.2),
+            inputRadius: 12,
+            prefixIcon: const IconSpec(
+              icon: Icons.image,
+              color: Colors.green,
+            ),
+            suffixIcon: const IconSpec(
+              icon: Icons.send,
+              color: Colors.blue,
+            ),
+          ),
+          const SizedBox(height: 20),
+          DInputMix(
+            controller: controller10,
+            hint: 'sample mix 10..\nline 2..\nline 3..',
+            boxBorder: Border.all(color: Colors.transparent),
+            boxColor: Theme.of(context).primaryColor.withOpacity(0.3),
+            boxRadius: 10,
+            minLine: 3,
+            maxLine: 3,
+            inputPadding: const EdgeInsets.symmetric(vertical: 16),
+            prefixIcon: const IconSpec(icon: Icons.description),
+          ),
+          const SizedBox(height: 20),
+          DInputMix(
+            controller: controller11,
+            title: 'Choose Date',
+            hint: 'sample mix 11',
+            crossAxisAlignment: CrossAxisAlignment.end,
+            inputPadding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
+            boxRadius: 20,
+            suffixIcon: IconSpec(
+              icon: Icons.event,
+              splashColor: Colors.green.shade300,
+              margin: const EdgeInsets.all(2),
+              radius: 20 - 2,
+              onTap: () {
+                // date picker and set to controller
+              },
+            ),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }

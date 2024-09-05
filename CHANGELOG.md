@@ -1,3 +1,8 @@
+## 0.2.0
+
+- Add New Widget: DInputMix
+- restructure lib
+
 ## 0.1.4
 
 - remove typedef
