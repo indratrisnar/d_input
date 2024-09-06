@@ -22,7 +22,8 @@ class DInputMix extends StatelessWidget {
     this.inputOnTap,
     this.hint,
     this.hintStyle = const TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
-    this.crossAxisAlignment = CrossAxisAlignment.start,
+    this.crossAxisAlignmentTitle = CrossAxisAlignment.start,
+    this.crossAxisAlignmentBox = CrossAxisAlignment.center,
     this.minLine = 1,
     this.maxLine = 1,
     this.obscureChar = '●',
@@ -96,7 +97,10 @@ class DInputMix extends StatelessWidget {
   final TextStyle hintStyle;
 
   /// arrange title and box input
-  final CrossAxisAlignment crossAxisAlignment;
+  final CrossAxisAlignment crossAxisAlignmentTitle;
+
+  /// arrange widget inside box
+  final CrossAxisAlignment crossAxisAlignmentBox;
 
   /// for text area, combine with `maxLine`
   final int minLine;
@@ -139,7 +143,7 @@ class DInputMix extends StatelessWidget {
           width: 2,
         );
     return Column(
-      crossAxisAlignment: crossAxisAlignment,
+      crossAxisAlignment: crossAxisAlignmentTitle,
       children: [
         if (title != null)
           Padding(
@@ -156,7 +160,7 @@ class DInputMix extends StatelessWidget {
             border: newBoxBorder,
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: crossAxisAlignmentBox,
             children: [
               prefixIcon.build(context, boxRadius),
               Expanded(
