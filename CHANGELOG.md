@@ -1,3 +1,10 @@
+## 0.3.0
+
+- new widget: DInputDropdown
+- DInputMix:
+  - new property axis, cross box
+- new example
+
 ## 0.2.2
 
 - DInputMix
