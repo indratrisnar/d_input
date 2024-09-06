@@ -38,6 +38,17 @@ class _TestDInputState extends State<TestDInput> {
   final controller11 = TextEditingController();
   bool obscure = false;
 
+  List<String> levels = [
+    'Beginner',
+    'Junior',
+    'Intermediet',
+    'Senior',
+    'Expert',
+  ];
+  String dropdownValue1 = 'Beginner';
+  String dropdownValue2 = 'Beginner';
+  String dropdownValue3 = 'Beginner';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,7 +164,6 @@ class _TestDInputState extends State<TestDInput> {
               vertical: 8,
               horizontal: 12,
             ),
-            inputMargin: const EdgeInsets.fromLTRB(0, 8, 8, 8),
             inputBackgroundColor: Colors.amber.withOpacity(0.3),
             inputRadius: 12,
             prefixIcon: const IconSpec(
@@ -169,6 +179,7 @@ class _TestDInputState extends State<TestDInput> {
             hint: 'sample mix 9',
             minLine: 3,
             maxLine: 3,
+            crossAxisAlignmentBox: CrossAxisAlignment.start,
             inputPadding: const EdgeInsets.symmetric(
               vertical: 8,
               horizontal: 12,
@@ -189,6 +200,7 @@ class _TestDInputState extends State<TestDInput> {
           DInputMix(
             controller: controller10,
             hint: 'sample mix 10..\nline 2..\nline 3..',
+            crossAxisAlignmentBox: CrossAxisAlignment.start,
             boxBorder: Border.all(color: Colors.transparent),
             boxColor: Theme.of(context).primaryColor.withOpacity(0.3),
             boxRadius: 10,
@@ -202,7 +214,7 @@ class _TestDInputState extends State<TestDInput> {
             controller: controller11,
             title: 'Choose Date',
             hint: 'sample mix 11',
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignmentTitle: CrossAxisAlignment.end,
             inputPadding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
             boxRadius: 20,
             suffixIcon: IconSpec(
@@ -213,6 +225,55 @@ class _TestDInputState extends State<TestDInput> {
               onTap: () {
                 // date picker and set to controller
               },
+            ),
+          ),
+          const SizedBox(height: 20),
+          DInputDropdown<String>(
+            value: dropdownValue1,
+            inputOnChanged: (value) {},
+            items: levels.map((e) {
+              return DropdownMenuItem(
+                value: e,
+                child: Text(e),
+              );
+            }).toList(),
+            title: 'Dropdown 1',
+          ),
+          const SizedBox(height: 20),
+          DInputDropdown<String>(
+            value: dropdownValue2,
+            inputOnChanged: (value) {},
+            items: levels.map((e) {
+              return DropdownMenuItem(
+                value: e,
+                child: Text(e),
+              );
+            }).toList(),
+            title: 'Dropdown 2',
+            icon: const Icon(Icons.keyboard_arrow_down),
+          ),
+          const SizedBox(height: 20),
+          DInputDropdown<String>(
+            value: dropdownValue3,
+            inputOnChanged: (value) {
+              if (value == null) return;
+              dropdownValue3 = value;
+            },
+            items: levels.map((e) {
+              return DropdownMenuItem(
+                value: e,
+                child: Text(e),
+              );
+            }).toList(),
+            title: 'Dropdown 3',
+            inputRadius: 12,
+            inputMargin: const EdgeInsets.only(left: 8),
+            inputPadding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+            inputBackgroundColor: Colors.amber.withOpacity(0.3),
+            icon: const Icon(Icons.keyboard_arrow_down),
+            suffixIcon: IconSpec(
+              icon: Icons.add_circle,
+              onTap: () => print(dropdownValue3),
             ),
           ),
           const SizedBox(height: 20),
