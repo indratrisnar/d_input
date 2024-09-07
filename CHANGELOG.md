@@ -1,3 +1,8 @@
+## 0.3.4
+
+- DInputMix:
+  - fix implement obscure
+
 ## 0.3.3
 
 - DInputDropdown:

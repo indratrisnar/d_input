@@ -183,6 +183,8 @@ class DInputMix extends StatelessWidget {
                     onChanged: inputOnChanged,
                     onFieldSubmitted: inputOnFieldSubmitted,
                     focusNode: inputFocusNode,
+                    obscureText: obscure,
+                    obscuringCharacter: obscureChar,
                     decoration: InputDecoration(
                       hintText: hint,
                       hintStyle: hintStyle,
