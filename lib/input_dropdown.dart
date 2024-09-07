@@ -9,6 +9,7 @@ class DInputDropdown<T> extends StatelessWidget {
     this.boxRadius = 20,
     this.boxBorder,
     this.boxColor,
+    this.noBoxBorder = false,
     this.inputPadding = const EdgeInsets.symmetric(
       horizontal: 20,
       vertical: 16,
@@ -58,6 +59,9 @@ class DInputDropdown<T> extends StatelessWidget {
   ///
   /// default: Theme.of(context).colorScheme.surfaceContainer
   final Color? boxColor;
+
+  /// default: false
+  final bool noBoxBorder;
 
   /// contentPadding inside InputDecoration
   final EdgeInsetsGeometry inputPadding;
@@ -145,7 +149,7 @@ class DInputDropdown<T> extends StatelessWidget {
           decoration: BoxDecoration(
             color: boxColor ?? Theme.of(context).colorScheme.surfaceContainer,
             borderRadius: BorderRadius.circular(boxRadius),
-            border: newBoxBorder,
+            border: noBoxBorder ? null : newBoxBorder,
           ),
           child: Row(
             crossAxisAlignment: crossAxisAlignmentBox,
