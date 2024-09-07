@@ -71,6 +71,7 @@ class _TestDInputState extends State<TestDInput> {
           DInputMix(
             controller: controller1,
             hint: 'sample mix 1',
+            noBoxBorder: true,
             inputOnFieldSubmitted: (value) {
               print('submit: $value');
             },

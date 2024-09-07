@@ -1,3 +1,8 @@
+## 0.3.2
+
+- DInputMix:
+  - new property `noBoxBorder`. default: false
+
 ## 0.3.1
 
 - DInputMix:
