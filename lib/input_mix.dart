@@ -34,6 +34,7 @@ class DInputMix extends StatelessWidget {
     this.titleGap = 12,
     this.prefixIcon = const IconSpec(),
     this.suffixIcon = const IconSpec(),
+    this.enabled,
   });
 
   /// controll input
@@ -131,6 +132,9 @@ class DInputMix extends StatelessWidget {
   /// hide char or not
   final bool obscure;
 
+  /// default: true
+  final bool? enabled;
+
   @override
   Widget build(BuildContext context) {
     final inputBorder = OutlineInputBorder(
@@ -189,6 +193,7 @@ class DInputMix extends StatelessWidget {
                       disabledBorder: inputBorder,
                       focusedErrorBorder: inputBorder,
                     ),
+                    enabled: enabled,
                   ),
                 ),
               ),

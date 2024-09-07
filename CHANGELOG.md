@@ -1,3 +1,8 @@
+## 0.3.1
+
+- DInputMix:
+  - new property `enabled`
+
 ## 0.3.0
 
 - new widget: DInputDropdown
