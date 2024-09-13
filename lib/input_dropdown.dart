@@ -31,6 +31,8 @@ class DInputDropdown<T> extends StatelessWidget {
     this.menuMaxHeight,
     this.icon = const SizedBox(),
     this.dropdownColor,
+    this.leftChildren,
+    this.rightChildren,
   });
 
   /// current active value
@@ -123,6 +125,12 @@ class DInputDropdown<T> extends StatelessWidget {
   /// default: Theme.of(context).colorScheme.surfaceContainer
   final Color? dropdownColor;
 
+  /// add widget after prefix
+  final List<Widget>? leftChildren;
+
+  /// add widget before suffix
+  final List<Widget>? rightChildren;
+
   @override
   Widget build(BuildContext context) {
     final inputBorder = OutlineInputBorder(
@@ -155,6 +163,7 @@ class DInputDropdown<T> extends StatelessWidget {
             crossAxisAlignment: crossAxisAlignmentBox,
             children: [
               prefixIcon.build(context, boxRadius),
+              if (leftChildren != null) ...leftChildren!,
               Expanded(
                 child: Padding(
                   padding: inputMargin,
@@ -184,6 +193,7 @@ class DInputDropdown<T> extends StatelessWidget {
                   ),
                 ),
               ),
+              if (rightChildren != null) ...rightChildren!,
               suffixIcon.build(context, boxRadius),
             ],
           ),

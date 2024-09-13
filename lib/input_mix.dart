@@ -36,6 +36,8 @@ class DInputMix extends StatelessWidget {
     this.prefixIcon = const IconSpec(),
     this.suffixIcon = const IconSpec(),
     this.enabled,
+    this.leftChildren,
+    this.rightChildren,
   });
 
   /// controll input
@@ -139,6 +141,12 @@ class DInputMix extends StatelessWidget {
   /// default: true
   final bool? enabled;
 
+  /// add widget after prefix
+  final List<Widget>? leftChildren;
+
+  /// add widget before suffix
+  final List<Widget>? rightChildren;
+
   @override
   Widget build(BuildContext context) {
     final inputBorder = OutlineInputBorder(
@@ -171,6 +179,7 @@ class DInputMix extends StatelessWidget {
             crossAxisAlignment: crossAxisAlignmentBox,
             children: [
               prefixIcon.build(context, boxRadius),
+              if (leftChildren != null) ...leftChildren!,
               Expanded(
                 child: Padding(
                   padding: inputMargin,
@@ -203,6 +212,7 @@ class DInputMix extends StatelessWidget {
                   ),
                 ),
               ),
+              if (rightChildren != null) ...rightChildren!,
               suffixIcon.build(context, boxRadius),
             ],
           ),

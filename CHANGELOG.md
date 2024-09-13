@@ -1,3 +1,9 @@
+## 0.4.0
+
+- new property `leftChildren` and `rightChildren` which return `List<Widget>` to add custom widget for your input. available for:
+  - DInputMix
+  - DInputDropdown:
+
 ## 0.3.4
 
 - DInputMix:

@@ -229,6 +229,59 @@ class _TestDInputState extends State<TestDInput> {
             ),
           ),
           const SizedBox(height: 20),
+          DInputMix(
+            title: 'Left Children',
+            hint: 'sample mix 12',
+            inputPadding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
+            boxRadius: 20,
+            prefixIcon: IconSpec(
+              icon: Icons.event,
+              onTap: () {},
+            ),
+            leftChildren: const [
+              Icon(Icons.reset_tv),
+              Icon(Icons.ac_unit),
+            ],
+          ),
+          const SizedBox(height: 20),
+          DInputMix(
+            title: 'Right Children',
+            hint: 'sample mix 13',
+            inputPadding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
+            boxRadius: 20,
+            rightChildren: const [
+              Icon(Icons.reset_tv),
+              Icon(Icons.ac_unit),
+            ],
+            suffixIcon: IconSpec(
+              icon: Icons.event,
+              onTap: () {},
+            ),
+          ),
+          const SizedBox(height: 20),
+          DInputMix(
+            title: 'Both Children',
+            hint: 'sample mix 14',
+            inputPadding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
+            boxRadius: 20,
+            prefixIcon: IconSpec(
+              icon: Icons.arrow_back,
+              onTap: () {},
+            ),
+            leftChildren: const [
+              Icon(Icons.reset_tv),
+              Icon(Icons.ac_unit),
+            ],
+            rightChildren: const [
+              Icon(Icons.reset_tv),
+              Icon(Icons.ac_unit),
+            ],
+            suffixIcon: IconSpec(
+              icon: Icons.arrow_forward,
+              onTap: () {},
+            ),
+          ),
+          const SizedBox(height: 20),
           DInputDropdown<String>(
             value: dropdownValue1,
             inputOnChanged: (value) {},
