@@ -1,3 +1,10 @@
+## 0.4.2
+
+new property DInputMix:
+
+- keyboardType
+- keyboardAppearance
+
 ## 0.4.0
 
 - new property `leftChildren` and `rightChildren` which return `List<Widget>` to add custom widget for your input. available for:

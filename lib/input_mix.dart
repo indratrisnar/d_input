@@ -38,6 +38,8 @@ class DInputMix extends StatelessWidget {
     this.enabled,
     this.leftChildren,
     this.rightChildren,
+    this.keyboardType,
+    this.keyboardAppearance,
   });
 
   /// controll input
@@ -147,6 +149,10 @@ class DInputMix extends StatelessWidget {
   /// add widget before suffix
   final List<Widget>? rightChildren;
 
+  final TextInputType? keyboardType;
+
+  final Brightness? keyboardAppearance;
+
   @override
   Widget build(BuildContext context) {
     final inputBorder = OutlineInputBorder(
@@ -194,6 +200,8 @@ class DInputMix extends StatelessWidget {
                     focusNode: inputFocusNode,
                     obscureText: obscure,
                     obscuringCharacter: obscureChar,
+                    keyboardType: keyboardType,
+                    keyboardAppearance: keyboardAppearance,
                     decoration: InputDecoration(
                       hintText: hint,
                       hintStyle: hintStyle,
