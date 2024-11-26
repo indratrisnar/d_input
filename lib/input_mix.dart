@@ -1,12 +1,25 @@
 part of 'd_input.dart';
 
-class DInputMix extends StatelessWidget {
+class DInputMix extends StatefulWidget {
   const DInputMix({
     super.key,
     this.controller,
     this.boxRadius = 20,
-    this.boxBorder,
+    this.focusedBoxRadius = 20,
+    this.boxBorder = const Border.fromBorderSide(
+      BorderSide(
+        color: Colors.grey,
+        width: 1,
+      ),
+    ),
+    this.focusedBoxBorder = const Border.fromBorderSide(
+      BorderSide(
+        color: Colors.grey,
+        width: 2,
+      ),
+    ),
     this.boxColor,
+    this.focusedBoxColor,
     this.noBoxBorder = false,
     this.inputPadding = const EdgeInsets.symmetric(
       horizontal: 20,
@@ -50,21 +63,45 @@ class DInputMix extends StatelessWidget {
   /// default: 20
   final double boxRadius;
 
+  /// radius for all corner (box wrapper)
+  ///
+  /// default: 20
+  final double focusedBoxRadius;
+
   /// styling for box border
   ///
   /// default:
   /// ```dart
-  /// Border.all(
-  ///   color: Theme.of(context).primaryColor,
-  ///   width: 2,
+  /// const Border.fromBorderSide(
+  ///   BorderSide(
+  ///     color: Colors.grey,
+  ///     width: 1,
+  ///   ),
   /// )
   /// ```
-  final BoxBorder? boxBorder;
+  final BoxBorder boxBorder;
+
+  /// styling for box border
+  ///
+  /// ```dart
+  /// const Border.fromBorderSide(
+  ///   BorderSide(
+  ///     color: Colors.grey,
+  ///     width: 2,
+  ///   ),
+  /// )
+  /// ```
+  final BoxBorder focusedBoxBorder;
 
   /// background color
   ///
   /// default: Theme.of(context).colorScheme.surfaceContainer
   final Color? boxColor;
+
+  /// background color
+  ///
+  /// default: Theme.of(context).colorScheme.surfaceContainer
+  final Color? focusedBoxColor;
 
   /// default: false
   final bool noBoxBorder;
@@ -154,76 +191,105 @@ class DInputMix extends StatelessWidget {
   final Brightness? keyboardAppearance;
 
   @override
+  State<DInputMix> createState() => _DInputMixState();
+}
+
+class _DInputMixState extends State<DInputMix> {
+  final listenFocus = ValueNotifier(false);
+
+  @override
+  void dispose() {
+    listenFocus.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final inputBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(inputRadius),
-      borderSide: inputBorderSide,
+      borderRadius: BorderRadius.circular(widget.inputRadius),
+      borderSide: widget.inputBorderSide,
     );
-    final newBoxBorder = boxBorder ??
-        Border.all(
-          color: Theme.of(context).primaryColor,
-          width: 2,
-        );
+    final defaultBoxColor = Theme.of(context).colorScheme.surfaceContainer;
     return Column(
-      crossAxisAlignment: crossAxisAlignmentTitle,
+      crossAxisAlignment: widget.crossAxisAlignmentTitle,
       children: [
-        if (title != null)
+        if (widget.title != null)
           Padding(
-            padding: EdgeInsets.only(bottom: titleGap),
+            padding: EdgeInsets.only(bottom: widget.titleGap),
             child: Text(
-              title!,
-              style: titleStyle,
+              widget.title!,
+              style: widget.titleStyle,
             ),
           ),
-        DecoratedBox(
-          decoration: BoxDecoration(
-            color: boxColor ?? Theme.of(context).colorScheme.surfaceContainer,
-            borderRadius: BorderRadius.circular(boxRadius),
-            border: noBoxBorder ? null : newBoxBorder,
-          ),
-          child: Row(
-            crossAxisAlignment: crossAxisAlignmentBox,
-            children: [
-              prefixIcon.build(context, boxRadius),
-              if (leftChildren != null) ...leftChildren!,
-              Expanded(
-                child: Padding(
-                  padding: inputMargin,
-                  child: TextFormField(
-                    controller: controller,
-                    style: inputStyle,
-                    minLines: minLine,
-                    maxLines: maxLine,
-                    onTap: inputOnTap,
-                    onChanged: inputOnChanged,
-                    onFieldSubmitted: inputOnFieldSubmitted,
-                    focusNode: inputFocusNode,
-                    obscureText: obscure,
-                    obscuringCharacter: obscureChar,
-                    keyboardType: keyboardType,
-                    keyboardAppearance: keyboardAppearance,
-                    decoration: InputDecoration(
-                      hintText: hint,
-                      hintStyle: hintStyle,
-                      filled: inputBackgroundColor != null,
-                      fillColor: inputBackgroundColor,
-                      isDense: true,
-                      contentPadding: inputPadding,
-                      border: inputBorder,
-                      errorBorder: inputBorder,
-                      enabledBorder: inputBorder,
-                      focusedBorder: inputBorder,
-                      disabledBorder: inputBorder,
-                      focusedErrorBorder: inputBorder,
-                    ),
-                    enabled: enabled,
-                  ),
+        ListenableBuilder(
+          listenable: listenFocus,
+          builder: (context, child) {
+            bool isFocus = listenFocus.value;
+            return DecoratedBox(
+              decoration: BoxDecoration(
+                color: isFocus
+                    ? widget.focusedBoxColor ??
+                        (widget.boxColor ?? defaultBoxColor)
+                    : widget.boxColor ?? defaultBoxColor,
+                borderRadius: BorderRadius.circular(
+                  isFocus ? widget.focusedBoxRadius : widget.boxRadius,
                 ),
+                border: widget.noBoxBorder
+                    ? null
+                    : isFocus
+                        ? widget.focusedBoxBorder
+                        : widget.boxBorder,
               ),
-              if (rightChildren != null) ...rightChildren!,
-              suffixIcon.build(context, boxRadius),
-            ],
-          ),
+              child: Row(
+                crossAxisAlignment: widget.crossAxisAlignmentBox,
+                children: [
+                  widget.prefixIcon.build(context, widget.boxRadius),
+                  if (widget.leftChildren != null) ...widget.leftChildren!,
+                  Expanded(
+                    child: Padding(
+                      padding: widget.inputMargin,
+                      child: Focus(
+                        onFocusChange: (value) {
+                          listenFocus.value = value;
+                        },
+                        child: TextFormField(
+                          controller: widget.controller,
+                          style: widget.inputStyle,
+                          minLines: widget.minLine,
+                          maxLines: widget.maxLine,
+                          onTap: widget.inputOnTap,
+                          onChanged: widget.inputOnChanged,
+                          onFieldSubmitted: widget.inputOnFieldSubmitted,
+                          focusNode: widget.inputFocusNode,
+                          obscureText: widget.obscure,
+                          obscuringCharacter: widget.obscureChar,
+                          keyboardType: widget.keyboardType,
+                          keyboardAppearance: widget.keyboardAppearance,
+                          decoration: InputDecoration(
+                            hintText: widget.hint,
+                            hintStyle: widget.hintStyle,
+                            filled: widget.inputBackgroundColor != null,
+                            fillColor: widget.inputBackgroundColor,
+                            isDense: true,
+                            contentPadding: widget.inputPadding,
+                            border: inputBorder,
+                            errorBorder: inputBorder,
+                            enabledBorder: inputBorder,
+                            focusedBorder: inputBorder,
+                            disabledBorder: inputBorder,
+                            focusedErrorBorder: inputBorder,
+                          ),
+                          enabled: widget.enabled,
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (widget.rightChildren != null) ...widget.rightChildren!,
+                  widget.suffixIcon.build(context, widget.boxRadius),
+                ],
+              ),
+            );
+          },
         ),
       ],
     );

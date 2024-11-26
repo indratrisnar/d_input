@@ -1,3 +1,30 @@
+## 0.5.0
+
+DInputMix & DInputDropdown (now StateFullWidget)
+
+- changes:
+  - `boxBorder`
+    ```dart
+    const Border.fromBorderSide(
+      BorderSide(
+        color: Colors.grey,
+        width: 1,
+      ),
+    )
+    ```
+- new:
+  - `focusedBoxRadius` : `boxRadius`
+  - `focusedBoxBorder`
+    ```dart
+    const Border.fromBorderSide(
+      BorderSide(
+        color: Colors.grey,
+        width: 2,
+      ),
+    )
+    ```
+  - `focusedBoxColor` == `boxColor`
+
 ## 0.4.2
 
 new property DInputMix:
