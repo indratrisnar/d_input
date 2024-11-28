@@ -5,10 +5,16 @@ class IconSpec {
   final String? iconAsset;
   final double iconSize;
   final Color? color;
+  final Color backgroundColor;
   final Size boxSize;
   final Alignment alignment;
   final void Function()? onTap;
+
+  /// if `borderRadius` null
   final double? radius;
+
+  /// will ignore `radius`
+  final BorderRadius? borderRadius;
   final Color? splashColor;
   final EdgeInsetsGeometry margin;
 
@@ -17,10 +23,12 @@ class IconSpec {
     this.iconAsset,
     this.alignment = Alignment.center,
     this.color,
+    this.backgroundColor = Colors.transparent,
     this.iconSize = 24,
     this.boxSize = const Size(56, 56),
     this.onTap,
     this.radius,
+    this.borderRadius,
     this.splashColor,
     this.margin = const EdgeInsets.all(0),
   });
@@ -31,10 +39,13 @@ class IconSpec {
     return Padding(
       padding: margin,
       child: Material(
-        color: Colors.transparent,
+        color: backgroundColor,
+        borderRadius:
+            borderRadius ?? BorderRadius.circular(radius ?? boxRadius),
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(radius ?? boxRadius),
+          borderRadius:
+              borderRadius ?? BorderRadius.circular(radius ?? boxRadius),
           splashColor: splashColor,
           child: SizedBox(
             width: boxSize.width,

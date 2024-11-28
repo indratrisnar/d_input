@@ -1,3 +1,10 @@
+## 0.5.1
+
+- IconSpec
+  - `backgroundColor` = Colors.transparent
+  - `borderRadius`  
+    if this property is used, `radius` will be ignored
+
 ## 0.5.0
 
 DInputMix & DInputDropdown (now StateFullWidget)
