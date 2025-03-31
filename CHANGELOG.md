@@ -1,3 +1,35 @@
+## 0.6.0
+
+DInputMix & DInputDropdown Update:
+
+- `focusedBoxRadius`: removed
+- `boxBorder`
+
+```dart
+const Border.fromBorderSide(
+  BorderSide(
+    color: Colors.grey,
+    width: 1,
+    strokeAlign: BorderSide.strokeAlignOutside,
+  ),
+)
+```
+
+- `focusedBoxBorder`
+
+```dart
+Border.fromBorderSide(
+  BorderSide(
+    color: Theme.of(context).primaryColor,
+    width: 2,
+    strokeAlign: BorderSide.strokeAlignOutside,
+  ),
+)
+```
+
+- `boxColor` : Colors.grey.shade100
+- Fix bug double focus
+
 ## 0.5.1
 
 - IconSpec

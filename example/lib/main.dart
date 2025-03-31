@@ -48,6 +48,13 @@ class _TestDInputState extends State<TestDInput> {
   String dropdownValue1 = 'Beginner';
   String dropdownValue2 = 'Beginner';
   String dropdownValue3 = 'Beginner';
+  final focusNode6 = FocusNode();
+
+  @override
+  void dispose() {
+    focusNode6.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +95,7 @@ class _TestDInputState extends State<TestDInput> {
           DInputMix(
             controller: controller3,
             hint: 'sample mix 3',
-            boxColor: Theme.of(context).primaryColor.withOpacity(0.4),
+            boxColor: Theme.of(context).primaryColor.withValues(alpha: 0.4),
             hintStyle: const TextStyle(
               fontWeight: FontWeight.normal,
               fontSize: 14,
@@ -116,16 +123,25 @@ class _TestDInputState extends State<TestDInput> {
             hint: 'sample mix 5',
             prefixIcon: IconSpec(
               icon: Icons.email,
+              backgroundColor: Colors.blue.shade100,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                bottomLeft: Radius.circular(20),
+              ),
               onTap: () => print('Icons.email'),
             ),
             suffixIcon: IconSpec(
               icon: Icons.verified,
-              onTap: () => print('Icons.verified'),
+              onTap: () {
+                // cursor move to sample mix 6
+                focusNode6.requestFocus();
+              },
             ),
           ),
           const SizedBox(height: 20),
           DInputMix(
             controller: controller6,
+            inputFocusNode: focusNode6,
             hint: 'sample mix 6',
             inputPadding: const EdgeInsets.symmetric(vertical: 16),
             prefixIcon: const IconSpec(
@@ -146,7 +162,7 @@ class _TestDInputState extends State<TestDInput> {
               horizontal: 12,
             ),
             inputMargin: const EdgeInsets.symmetric(vertical: 8),
-            inputBackgroundColor: Colors.amber.withOpacity(0.3),
+            inputBackgroundColor: Colors.amber.withValues(alpha: 0.3),
             inputRadius: 10,
             prefixIcon: const IconSpec(
               icon: Icons.email,
@@ -165,7 +181,7 @@ class _TestDInputState extends State<TestDInput> {
               vertical: 8,
               horizontal: 12,
             ),
-            inputBackgroundColor: Colors.amber.withOpacity(0.3),
+            inputBackgroundColor: Colors.amber.withValues(alpha: 0.3),
             inputRadius: 12,
             prefixIcon: const IconSpec(
               icon: Icons.email,
@@ -186,7 +202,7 @@ class _TestDInputState extends State<TestDInput> {
               horizontal: 12,
             ),
             inputMargin: const EdgeInsets.symmetric(vertical: 8),
-            inputBackgroundColor: Colors.grey.withOpacity(0.2),
+            inputBackgroundColor: Colors.grey.withValues(alpha: 0.2),
             inputRadius: 12,
             prefixIcon: const IconSpec(
               icon: Icons.image,
@@ -203,7 +219,7 @@ class _TestDInputState extends State<TestDInput> {
             hint: 'sample mix 10..\nline 2..\nline 3..',
             crossAxisAlignmentBox: CrossAxisAlignment.start,
             boxBorder: Border.all(color: Colors.transparent),
-            boxColor: Theme.of(context).primaryColor.withOpacity(0.3),
+            boxColor: Theme.of(context).primaryColor.withValues(alpha: 0.3),
             boxRadius: 10,
             minLine: 3,
             maxLine: 3,
@@ -323,7 +339,7 @@ class _TestDInputState extends State<TestDInput> {
             inputRadius: 12,
             inputMargin: const EdgeInsets.only(left: 8),
             inputPadding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
-            inputBackgroundColor: Colors.amber.withOpacity(0.3),
+            inputBackgroundColor: Colors.amber.withValues(alpha: 0.3),
             icon: const Icon(Icons.keyboard_arrow_down),
             suffixIcon: IconSpec(
               icon: Icons.add_circle,

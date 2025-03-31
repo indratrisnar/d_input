@@ -4,23 +4,13 @@ class DInputMix extends StatefulWidget {
   const DInputMix({
     super.key,
     this.controller,
-    this.boxRadius = 20,
-    this.focusedBoxRadius = 20,
-    this.boxBorder = const Border.fromBorderSide(
-      BorderSide(
-        color: Colors.grey,
-        width: 1,
-      ),
-    ),
-    this.focusedBoxBorder = const Border.fromBorderSide(
-      BorderSide(
-        color: Colors.grey,
-        width: 2,
-      ),
-    ),
-    this.boxColor,
-    this.focusedBoxColor,
+    this.enabled,
     this.noBoxBorder = false,
+    this.boxRadius = 20,
+    this.boxColor,
+    this.boxBorder,
+    this.focusedBoxColor,
+    this.focusedBoxBorder,
     this.inputPadding = const EdgeInsets.symmetric(
       horizontal: 20,
       vertical: 16,
@@ -36,21 +26,20 @@ class DInputMix extends StatefulWidget {
     this.inputOnTap,
     this.hint,
     this.hintStyle = const TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
-    this.crossAxisAlignmentTitle = CrossAxisAlignment.start,
-    this.crossAxisAlignmentBox = CrossAxisAlignment.center,
-    this.minLine = 1,
-    this.maxLine = 1,
-    this.obscureChar = '●',
-    this.obscure = false,
     this.title,
     this.titleStyle =
         const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     this.titleGap = 12,
     this.prefixIcon = const IconSpec(),
     this.suffixIcon = const IconSpec(),
-    this.enabled,
     this.leftChildren,
     this.rightChildren,
+    this.crossAxisAlignmentTitle = CrossAxisAlignment.start,
+    this.crossAxisAlignmentBox = CrossAxisAlignment.center,
+    this.minLine = 1,
+    this.maxLine = 1,
+    this.obscureChar = '●',
+    this.obscure = false,
     this.keyboardType,
     this.keyboardAppearance,
   });
@@ -58,15 +47,21 @@ class DInputMix extends StatefulWidget {
   /// controll input
   final TextEditingController? controller;
 
+  /// default: true
+  final bool? enabled;
+
+  /// default: false
+  final bool noBoxBorder;
+
   /// radius for all corner (box wrapper)
   ///
   /// default: 20
   final double boxRadius;
 
-  /// radius for all corner (box wrapper)
+  /// background color
   ///
-  /// default: 20
-  final double focusedBoxRadius;
+  /// default: Colors.grey.shade100
+  final Color? boxColor;
 
   /// styling for box border
   ///
@@ -76,35 +71,29 @@ class DInputMix extends StatefulWidget {
   ///   BorderSide(
   ///     color: Colors.grey,
   ///     width: 1,
+  ///     strokeAlign: BorderSide.strokeAlignOutside,
   ///   ),
   /// )
   /// ```
-  final BoxBorder boxBorder;
+  final BoxBorder? boxBorder;
+
+  /// background color
+  ///
+  /// default: Colors.grey.shade100
+  final Color? focusedBoxColor;
 
   /// styling for box border
   ///
   /// ```dart
-  /// const Border.fromBorderSide(
+  /// Border.fromBorderSide(
   ///   BorderSide(
-  ///     color: Colors.grey,
+  ///     color: Theme.of(context).primaryColor,
   ///     width: 2,
+  ///     strokeAlign: BorderSide.strokeAlignOutside,
   ///   ),
   /// )
   /// ```
-  final BoxBorder focusedBoxBorder;
-
-  /// background color
-  ///
-  /// default: Theme.of(context).colorScheme.surfaceContainer
-  final Color? boxColor;
-
-  /// background color
-  ///
-  /// default: Theme.of(context).colorScheme.surfaceContainer
-  final Color? focusedBoxColor;
-
-  /// default: false
-  final bool noBoxBorder;
+  final BoxBorder? focusedBoxBorder;
 
   /// contentPadding inside InputDecoration
   final EdgeInsetsGeometry inputPadding;
@@ -142,18 +131,6 @@ class DInputMix extends StatefulWidget {
   /// styling hint text
   final TextStyle hintStyle;
 
-  /// arrange title and box input
-  final CrossAxisAlignment crossAxisAlignmentTitle;
-
-  /// arrange widget inside box
-  final CrossAxisAlignment crossAxisAlignmentBox;
-
-  /// for text area, combine with `maxLine`
-  final int minLine;
-
-  /// for text area, combine with `minLine`
-  final int maxLine;
-
   /// show text title above box input
   final String? title;
 
@@ -163,11 +140,29 @@ class DInputMix extends StatefulWidget {
   /// give space between title and box input
   final double titleGap;
 
+  /// for text area, combine with `maxLine`
+  final int minLine;
+
+  /// for text area, combine with `minLine`
+  final int maxLine;
+
   /// Icon on left
   final IconSpec prefixIcon;
 
   /// Icon on right
   final IconSpec suffixIcon;
+
+  /// add widget after prefix
+  final List<Widget>? leftChildren;
+
+  /// add widget before suffix
+  final List<Widget>? rightChildren;
+
+  /// arrange title and box input
+  final CrossAxisAlignment crossAxisAlignmentTitle;
+
+  /// arrange widget inside box
+  final CrossAxisAlignment crossAxisAlignmentBox;
 
   ///```dart
   /// ●, •, ♦,
@@ -176,15 +171,6 @@ class DInputMix extends StatefulWidget {
 
   /// hide char or not
   final bool obscure;
-
-  /// default: true
-  final bool? enabled;
-
-  /// add widget after prefix
-  final List<Widget>? leftChildren;
-
-  /// add widget before suffix
-  final List<Widget>? rightChildren;
 
   final TextInputType? keyboardType;
 
@@ -196,20 +182,58 @@ class DInputMix extends StatefulWidget {
 
 class _DInputMixState extends State<DInputMix> {
   final listenFocus = ValueNotifier(false);
+  late final FocusNode localFocusNode;
+
+  @override
+  void initState() {
+    localFocusNode = widget.inputFocusNode ?? FocusNode();
+    localFocusNode.addListener(() {
+      listenFocus.value = localFocusNode.hasFocus;
+      // log('.........................');
+      // log(widget.hint.toString());
+      // log('local focus node: ${localFocusNode.hasFocus}');
+      // log('.........................');
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
     listenFocus.dispose();
+    localFocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final inputBorder = OutlineInputBorder(
+    final primaryColor = Theme.of(context).primaryColor;
+
+    // setup box
+    final localBoxColor = widget.boxColor ?? Colors.grey.shade100;
+    final localBoxBorder = widget.boxBorder ??
+        const Border.fromBorderSide(
+          BorderSide(
+            color: Colors.grey,
+            width: 1,
+            strokeAlign: BorderSide.strokeAlignOutside,
+          ),
+        );
+    final localFocusedBoxColor = widget.focusedBoxColor ?? localBoxColor;
+    final localFocusedBoxBorder = widget.focusedBoxBorder ??
+        Border.fromBorderSide(
+          BorderSide(
+            color: primaryColor,
+            width: 2,
+            strokeAlign: BorderSide.strokeAlignOutside,
+          ),
+        );
+
+    // setup input
+    final localInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(widget.inputRadius),
       borderSide: widget.inputBorderSide,
     );
-    final defaultBoxColor = Theme.of(context).colorScheme.surfaceContainer;
+
     return Column(
       crossAxisAlignment: widget.crossAxisAlignmentTitle,
       children: [
@@ -221,75 +245,63 @@ class _DInputMixState extends State<DInputMix> {
               style: widget.titleStyle,
             ),
           ),
-        ListenableBuilder(
-          listenable: listenFocus,
-          builder: (context, child) {
-            bool isFocus = listenFocus.value;
+        ValueListenableBuilder<bool>(
+          valueListenable: listenFocus,
+          builder: (context, isFocus, child) {
+            final color = isFocus ? localFocusedBoxColor : localBoxColor;
+            final border = isFocus ? localFocusedBoxBorder : localBoxBorder;
             return DecoratedBox(
               decoration: BoxDecoration(
-                color: isFocus
-                    ? widget.focusedBoxColor ??
-                        (widget.boxColor ?? defaultBoxColor)
-                    : widget.boxColor ?? defaultBoxColor,
-                borderRadius: BorderRadius.circular(
-                  isFocus ? widget.focusedBoxRadius : widget.boxRadius,
-                ),
-                border: widget.noBoxBorder
-                    ? null
-                    : isFocus
-                        ? widget.focusedBoxBorder
-                        : widget.boxBorder,
+                color: color,
+                borderRadius: BorderRadius.circular(widget.boxRadius),
+                border: widget.noBoxBorder ? null : border,
               ),
-              child: Row(
-                crossAxisAlignment: widget.crossAxisAlignmentBox,
-                children: [
-                  widget.prefixIcon.build(context, widget.boxRadius),
-                  if (widget.leftChildren != null) ...widget.leftChildren!,
-                  Expanded(
-                    child: Padding(
-                      padding: widget.inputMargin,
-                      child: Focus(
-                        onFocusChange: (value) {
-                          listenFocus.value = value;
-                        },
-                        child: TextFormField(
-                          controller: widget.controller,
-                          style: widget.inputStyle,
-                          minLines: widget.minLine,
-                          maxLines: widget.maxLine,
-                          onTap: widget.inputOnTap,
-                          onChanged: widget.inputOnChanged,
-                          onFieldSubmitted: widget.inputOnFieldSubmitted,
-                          focusNode: widget.inputFocusNode,
-                          obscureText: widget.obscure,
-                          obscuringCharacter: widget.obscureChar,
-                          keyboardType: widget.keyboardType,
-                          keyboardAppearance: widget.keyboardAppearance,
-                          decoration: InputDecoration(
-                            hintText: widget.hint,
-                            hintStyle: widget.hintStyle,
-                            filled: widget.inputBackgroundColor != null,
-                            fillColor: widget.inputBackgroundColor,
-                            isDense: true,
-                            contentPadding: widget.inputPadding,
-                            border: inputBorder,
-                            errorBorder: inputBorder,
-                            enabledBorder: inputBorder,
-                            focusedBorder: inputBorder,
-                            disabledBorder: inputBorder,
-                            focusedErrorBorder: inputBorder,
-                          ),
-                          enabled: widget.enabled,
-                        ),
-                      ),
-                    ),
-                  ),
-                  if (widget.rightChildren != null) ...widget.rightChildren!,
-                  widget.suffixIcon.build(context, widget.boxRadius),
-                ],
-              ),
+              child: child,
             );
           },
+          child: Row(
+            crossAxisAlignment: widget.crossAxisAlignmentBox,
+            children: [
+              widget.prefixIcon.build(context, widget.boxRadius),
+              if (widget.leftChildren != null) ...widget.leftChildren!,
+              Expanded(
+                child: Padding(
+                  padding: widget.inputMargin,
+                  child: TextFormField(
+                    controller: widget.controller,
+                    style: widget.inputStyle,
+                    minLines: widget.minLine,
+                    maxLines: widget.maxLine,
+                    onTap: widget.inputOnTap,
+                    onChanged: widget.inputOnChanged,
+                    onFieldSubmitted: widget.inputOnFieldSubmitted,
+                    focusNode: localFocusNode,
+                    obscureText: widget.obscure,
+                    obscuringCharacter: widget.obscureChar,
+                    keyboardType: widget.keyboardType,
+                    keyboardAppearance: widget.keyboardAppearance,
+                    decoration: InputDecoration(
+                      hintText: widget.hint,
+                      hintStyle: widget.hintStyle,
+                      filled: widget.inputBackgroundColor != null,
+                      fillColor: widget.inputBackgroundColor,
+                      isDense: true,
+                      contentPadding: widget.inputPadding,
+                      border: localInputBorder,
+                      errorBorder: localInputBorder,
+                      enabledBorder: localInputBorder,
+                      focusedBorder: localInputBorder,
+                      disabledBorder: localInputBorder,
+                      focusedErrorBorder: localInputBorder,
+                    ),
+                    enabled: widget.enabled,
+                  ),
+                ),
+              ),
+              if (widget.rightChildren != null) ...widget.rightChildren!,
+              widget.suffixIcon.build(context, widget.boxRadius),
+            ],
+          ),
         ),
       ],
     );
