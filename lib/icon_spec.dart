@@ -10,9 +10,6 @@ class IconSpec {
   final Alignment alignment;
   final void Function()? onTap;
 
-  /// if `borderRadius` null
-  final double? radius;
-
   /// will ignore `radius`
   final BorderRadius? borderRadius;
   final Color? splashColor;
@@ -27,25 +24,22 @@ class IconSpec {
     this.iconSize = 24,
     this.boxSize = const Size(56, 56),
     this.onTap,
-    this.radius,
-    this.borderRadius,
+    this.borderRadius = const BorderRadius.all(Radius.circular(20)),
     this.splashColor,
     this.margin = const EdgeInsets.all(0),
   });
 
-  Widget build(BuildContext context, double boxRadius) {
+  Widget build(BuildContext context) {
     if (icon == null && iconAsset == null) return const SizedBox();
     final iconColor = color ?? Theme.of(context).primaryColor;
     return Padding(
       padding: margin,
       child: Material(
         color: backgroundColor,
-        borderRadius:
-            borderRadius ?? BorderRadius.circular(radius ?? boxRadius),
+        borderRadius: borderRadius,
         child: InkWell(
           onTap: onTap,
-          borderRadius:
-              borderRadius ?? BorderRadius.circular(radius ?? boxRadius),
+          borderRadius: borderRadius,
           splashColor: splashColor,
           child: SizedBox(
             width: boxSize.width,

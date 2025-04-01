@@ -1,3 +1,15 @@
+## 1.0.0
+
+- Basic Input Widget Removed
+  - `DInput()` : removed
+  - `DInputPassword()` : removed
+- Merged (Renamed)
+  - `DInput()` merge `DInputMix()` = new version of `DInput()`
+- `boxBorder` -> `shapeBoxBorder` : [ShapeBorder](https://flutter-delux.pages.dev/docs/decorations/shape-border/)
+- `boxRadius` -> `boxBorderRadius` : BorderRadius
+- Fix Runtime Exception
+  - Fix Unmatched between local focus node and parent focus node
+
 ## 0.6.0
 
 DInputMix & DInputDropdown Update:

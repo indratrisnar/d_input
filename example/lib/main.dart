@@ -60,294 +60,249 @@ class _TestDInputState extends State<TestDInput> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('D Input'),
-        centerTitle: true,
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
-          DInput(
-            controller: TextEditingController(),
-          ),
-          const SizedBox(height: 20),
-          DInputPassword(
-            controller: TextEditingController(),
-          ),
-          const SizedBox(height: 20),
-          DInputMix(
-            controller: controller1,
-            hint: 'sample mix 1',
-            noBoxBorder: true,
-            inputOnFieldSubmitted: (value) {
-              print('submit: $value');
-            },
-          ),
-          const SizedBox(height: 20),
-          DInputMix(
-            controller: controller2,
-            title: 'Description',
-            hint: 'sample mix 2',
-            minLine: 3,
-            maxLine: 5,
-          ),
-          const SizedBox(height: 20),
-          DInputMix(
-            controller: controller3,
-            hint: 'sample mix 3',
-            boxColor: Theme.of(context).primaryColor.withValues(alpha: 0.4),
-            hintStyle: const TextStyle(
-              fontWeight: FontWeight.normal,
-              fontSize: 14,
-              color: Colors.white,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            DInput(
+              controller: controller1,
+              hint: 'sample 1',
             ),
-            inputStyle: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-              color: Colors.white,
+            const SizedBox(height: 20),
+            DInput(
+              controller: controller2,
+              title: 'Description',
+              hint: 'sample 2',
+              minLine: 3,
+              maxLine: 5,
             ),
-          ),
-          const SizedBox(height: 20),
-          DInputMix(
-            controller: controller4,
-            hint: 'sample mix 4',
-            boxRadius: 8,
-            boxBorder: Border.all(
-              width: 2,
-              color: Colors.green,
-            ),
-          ),
-          const SizedBox(height: 20),
-          DInputMix(
-            controller: controller5,
-            hint: 'sample mix 5',
-            prefixIcon: IconSpec(
-              icon: Icons.email,
-              backgroundColor: Colors.blue.shade100,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                bottomLeft: Radius.circular(20),
+            const SizedBox(height: 20),
+            DInput(
+              controller: controller3,
+              hint: 'sample 3',
+              boxColor: Theme.of(context).primaryColor.withValues(alpha: 0.2),
+              hintStyle: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: 14,
+                color: Theme.of(context).primaryColor,
               ),
-              onTap: () => print('Icons.email'),
+              inputStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                color: Theme.of(context).primaryColor,
+              ),
+              shapeBoxBorder: BeveledRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
-            suffixIcon: IconSpec(
-              icon: Icons.verified,
-              onTap: () {
-                // cursor move to sample mix 6
-                focusNode6.requestFocus();
+            const SizedBox(height: 20),
+            DInput(
+              controller: controller4,
+              hint: 'sample 4',
+              boxBorderRadius: BorderRadius.circular(8),
+              boxBorder: const BorderSide(width: 2, color: Colors.green),
+            ),
+            const SizedBox(height: 20),
+            DInput(
+              controller: controller5,
+              hint: 'sample 5',
+              inputPadding: const EdgeInsets.symmetric(vertical: 16),
+              prefixIcon: const IconSpec(
+                icon: Icons.email,
+                color: Colors.green,
+              ),
+              suffixIcon: IconSpec(
+                icon: Icons.verified,
+                color: Colors.blue,
+                onTap: () {
+                  // cursor move to sample 6
+                  focusNode6.requestFocus();
+                },
+              ),
+            ),
+            const SizedBox(height: 20),
+            DInput(
+              controller: controller6,
+              inputFocusNode: focusNode6,
+              hint: 'sample 6',
+              inputPadding: const EdgeInsets.symmetric(
+                vertical: 8,
+                horizontal: 12,
+              ),
+              inputMargin: const EdgeInsets.symmetric(vertical: 8),
+              inputBackgroundColor: Colors.amber.withValues(alpha: 0.3),
+              inputRadius: 10,
+              prefixIcon: const IconSpec(
+                icon: Icons.email,
+                color: Colors.green,
+              ),
+              suffixIcon: const IconSpec(
+                icon: Icons.verified,
+                color: Colors.blue,
+              ),
+            ),
+            const SizedBox(height: 20),
+            DInput(
+              controller: controller7,
+              hint: 'sample 7',
+              noBoxBorder: true,
+              inputOnFieldSubmitted: (value) {
+                print('submit: $value');
               },
             ),
-          ),
-          const SizedBox(height: 20),
-          DInputMix(
-            controller: controller6,
-            inputFocusNode: focusNode6,
-            hint: 'sample mix 6',
-            inputPadding: const EdgeInsets.symmetric(vertical: 16),
-            prefixIcon: const IconSpec(
-              icon: Icons.email,
-              color: Colors.green,
+            const SizedBox(height: 20),
+            DInput(
+              controller: controller8,
+              hint: 'sample 8',
+              minLine: 3,
+              maxLine: 3,
+              crossAxisAlignmentBox: CrossAxisAlignment.start,
+              inputPadding: const EdgeInsets.symmetric(
+                vertical: 8,
+                horizontal: 12,
+              ),
+              inputMargin: const EdgeInsets.symmetric(vertical: 8),
+              inputBackgroundColor: Colors.grey.withValues(alpha: 0.2),
+              inputRadius: 12,
+              prefixIcon: const IconSpec(
+                icon: Icons.image,
+                color: Colors.green,
+              ),
+              suffixIcon: const IconSpec(
+                icon: Icons.send,
+                color: Colors.blue,
+              ),
             ),
-            suffixIcon: const IconSpec(
-              icon: Icons.verified,
-              color: Colors.blue,
+            const SizedBox(height: 20),
+            DInput(
+              controller: controller9,
+              hint: 'sample 9..\nline 2..\nline 3..',
+              crossAxisAlignmentBox: CrossAxisAlignment.start,
+              boxBorder: const BorderSide(color: Colors.transparent),
+              boxColor: Theme.of(context).primaryColor.withValues(alpha: 0.3),
+              boxBorderRadius: BorderRadius.circular(10),
+              minLine: 3,
+              maxLine: 3,
+              inputPadding: const EdgeInsets.symmetric(vertical: 16),
+              prefixIcon: const IconSpec(icon: Icons.description),
             ),
-          ),
-          const SizedBox(height: 20),
-          DInputMix(
-            controller: controller7,
-            hint: 'sample mix 7',
-            inputPadding: const EdgeInsets.symmetric(
-              vertical: 8,
-              horizontal: 12,
+            const SizedBox(height: 20),
+            DInput(
+              controller: controller10,
+              title: 'Choose Date',
+              hint: 'sample 10',
+              crossAxisAlignmentTitle: CrossAxisAlignment.end,
+              inputPadding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
+              suffixIcon: IconSpec(
+                icon: Icons.event,
+                splashColor: Colors.green.shade300,
+                onTap: () {
+                  // date picker and set to controller
+                },
+              ),
             ),
-            inputMargin: const EdgeInsets.symmetric(vertical: 8),
-            inputBackgroundColor: Colors.amber.withValues(alpha: 0.3),
-            inputRadius: 10,
-            prefixIcon: const IconSpec(
-              icon: Icons.email,
-              color: Colors.green,
+            const SizedBox(height: 20),
+            DInput(
+              title: 'Left Children',
+              hint: 'sample 11',
+              inputPadding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
+              prefixIcon: IconSpec(
+                icon: Icons.event,
+                onTap: () {},
+              ),
+              leftChildren: const [
+                Icon(Icons.reset_tv),
+                Icon(Icons.ac_unit),
+              ],
             ),
-            suffixIcon: const IconSpec(
-              icon: Icons.verified,
-              color: Colors.blue,
+            const SizedBox(height: 20),
+            DInput(
+              title: 'Right Children',
+              hint: 'sample 12',
+              inputPadding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
+              rightChildren: const [
+                Icon(Icons.reset_tv),
+                Icon(Icons.ac_unit),
+              ],
+              suffixIcon: IconSpec(
+                icon: Icons.event,
+                onTap: () {},
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          DInputMix(
-            controller: controller8,
-            hint: 'sample mix 8',
-            inputPadding: const EdgeInsets.symmetric(
-              vertical: 8,
-              horizontal: 12,
+            const SizedBox(height: 20),
+            DInput(
+              title: 'Both Children',
+              hint: 'sample 13',
+              inputPadding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
+              prefixIcon: IconSpec(
+                icon: Icons.arrow_back,
+                onTap: () {},
+              ),
+              leftChildren: const [
+                Icon(Icons.reset_tv),
+                Icon(Icons.ac_unit),
+              ],
+              rightChildren: const [
+                Icon(Icons.reset_tv),
+                Icon(Icons.ac_unit),
+              ],
+              suffixIcon: IconSpec(
+                icon: Icons.arrow_forward,
+                onTap: () {},
+              ),
             ),
-            inputBackgroundColor: Colors.amber.withValues(alpha: 0.3),
-            inputRadius: 12,
-            prefixIcon: const IconSpec(
-              icon: Icons.email,
-              color: Colors.green,
-              alignment: Alignment(0.3, 0),
-              boxSize: Size(40, 56),
+            const SizedBox(height: 20),
+            DInputDropdown<String>(
+              value: dropdownValue1,
+              inputOnChanged: (value) {},
+              items: levels.map((e) {
+                return DropdownMenuItem(
+                  value: e,
+                  child: Text(e),
+                );
+              }).toList(),
+              title: 'Dropdown 1',
             ),
-          ),
-          const SizedBox(height: 20),
-          DInputMix(
-            controller: controller9,
-            hint: 'sample mix 9',
-            minLine: 3,
-            maxLine: 3,
-            crossAxisAlignmentBox: CrossAxisAlignment.start,
-            inputPadding: const EdgeInsets.symmetric(
-              vertical: 8,
-              horizontal: 12,
+            const SizedBox(height: 20),
+            DInputDropdown<String>(
+              value: dropdownValue2,
+              inputOnChanged: (value) {},
+              items: levels.map((e) {
+                return DropdownMenuItem(
+                  value: e,
+                  child: Text(e),
+                );
+              }).toList(),
+              title: 'Dropdown 2',
+              icon: const Icon(Icons.keyboard_arrow_down),
             ),
-            inputMargin: const EdgeInsets.symmetric(vertical: 8),
-            inputBackgroundColor: Colors.grey.withValues(alpha: 0.2),
-            inputRadius: 12,
-            prefixIcon: const IconSpec(
-              icon: Icons.image,
-              color: Colors.green,
-            ),
-            suffixIcon: const IconSpec(
-              icon: Icons.send,
-              color: Colors.blue,
-            ),
-          ),
-          const SizedBox(height: 20),
-          DInputMix(
-            controller: controller10,
-            hint: 'sample mix 10..\nline 2..\nline 3..',
-            crossAxisAlignmentBox: CrossAxisAlignment.start,
-            boxBorder: Border.all(color: Colors.transparent),
-            boxColor: Theme.of(context).primaryColor.withValues(alpha: 0.3),
-            boxRadius: 10,
-            minLine: 3,
-            maxLine: 3,
-            inputPadding: const EdgeInsets.symmetric(vertical: 16),
-            prefixIcon: const IconSpec(icon: Icons.description),
-          ),
-          const SizedBox(height: 20),
-          DInputMix(
-            controller: controller11,
-            title: 'Choose Date',
-            hint: 'sample mix 11',
-            crossAxisAlignmentTitle: CrossAxisAlignment.end,
-            inputPadding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
-            boxRadius: 20,
-            suffixIcon: IconSpec(
-              icon: Icons.event,
-              splashColor: Colors.green.shade300,
-              margin: const EdgeInsets.all(2),
-              radius: 20 - 2,
-              onTap: () {
-                // date picker and set to controller
+            const SizedBox(height: 20),
+            DInputDropdown<String>(
+              value: dropdownValue3,
+              inputOnChanged: (value) {
+                if (value == null) return;
+                dropdownValue3 = value;
               },
+              items: levels.map((e) {
+                return DropdownMenuItem(
+                  value: e,
+                  child: Text(e),
+                );
+              }).toList(),
+              title: 'Dropdown 3',
+              inputRadius: 12,
+              inputMargin: const EdgeInsets.only(left: 8),
+              inputPadding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+              inputBackgroundColor: Colors.amber.withValues(alpha: 0.3),
+              icon: const Icon(Icons.keyboard_arrow_down),
+              suffixIcon: IconSpec(
+                icon: Icons.add_circle,
+                onTap: () => print(dropdownValue3),
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          DInputMix(
-            title: 'Left Children',
-            hint: 'sample mix 12',
-            inputPadding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
-            boxRadius: 20,
-            prefixIcon: IconSpec(
-              icon: Icons.event,
-              onTap: () {},
-            ),
-            leftChildren: const [
-              Icon(Icons.reset_tv),
-              Icon(Icons.ac_unit),
-            ],
-          ),
-          const SizedBox(height: 20),
-          DInputMix(
-            title: 'Right Children',
-            hint: 'sample mix 13',
-            inputPadding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
-            boxRadius: 20,
-            rightChildren: const [
-              Icon(Icons.reset_tv),
-              Icon(Icons.ac_unit),
-            ],
-            suffixIcon: IconSpec(
-              icon: Icons.event,
-              onTap: () {},
-            ),
-          ),
-          const SizedBox(height: 20),
-          DInputMix(
-            title: 'Both Children',
-            hint: 'sample mix 14',
-            inputPadding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
-            boxRadius: 20,
-            prefixIcon: IconSpec(
-              icon: Icons.arrow_back,
-              onTap: () {},
-            ),
-            leftChildren: const [
-              Icon(Icons.reset_tv),
-              Icon(Icons.ac_unit),
-            ],
-            rightChildren: const [
-              Icon(Icons.reset_tv),
-              Icon(Icons.ac_unit),
-            ],
-            suffixIcon: IconSpec(
-              icon: Icons.arrow_forward,
-              onTap: () {},
-            ),
-          ),
-          const SizedBox(height: 20),
-          DInputDropdown<String>(
-            value: dropdownValue1,
-            inputOnChanged: (value) {},
-            items: levels.map((e) {
-              return DropdownMenuItem(
-                value: e,
-                child: Text(e),
-              );
-            }).toList(),
-            title: 'Dropdown 1',
-          ),
-          const SizedBox(height: 20),
-          DInputDropdown<String>(
-            value: dropdownValue2,
-            inputOnChanged: (value) {},
-            items: levels.map((e) {
-              return DropdownMenuItem(
-                value: e,
-                child: Text(e),
-              );
-            }).toList(),
-            title: 'Dropdown 2',
-            icon: const Icon(Icons.keyboard_arrow_down),
-          ),
-          const SizedBox(height: 20),
-          DInputDropdown<String>(
-            value: dropdownValue3,
-            inputOnChanged: (value) {
-              if (value == null) return;
-              dropdownValue3 = value;
-            },
-            items: levels.map((e) {
-              return DropdownMenuItem(
-                value: e,
-                child: Text(e),
-              );
-            }).toList(),
-            title: 'Dropdown 3',
-            inputRadius: 12,
-            inputMargin: const EdgeInsets.only(left: 8),
-            inputPadding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
-            inputBackgroundColor: Colors.amber.withValues(alpha: 0.3),
-            icon: const Icon(Icons.keyboard_arrow_down),
-            suffixIcon: IconSpec(
-              icon: Icons.add_circle,
-              onTap: () => print(dropdownValue3),
-            ),
-          ),
-          const SizedBox(height: 20),
-        ],
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }

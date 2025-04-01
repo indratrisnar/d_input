@@ -7,21 +7,13 @@ class DInputDropdown<T> extends StatefulWidget {
     required this.items,
     required this.inputOnChanged,
     this.noBoxBorder = false,
-    this.boxRadius = 20,
+    this.boxBorderRadius = const BorderRadius.all(Radius.circular(20)),
     this.boxColor,
-    this.boxBorder = const Border.fromBorderSide(
-      BorderSide(
-        color: Colors.grey,
-        width: 1,
-      ),
-    ),
+    this.boxBorder,
+    this.shapeBoxBorder,
     this.focusedBoxColor,
-    this.focusedBoxBorder = const Border.fromBorderSide(
-      BorderSide(
-        color: Colors.grey,
-        width: 2,
-      ),
-    ),
+    this.focusedBoxBorder,
+    this.focusedShapeBoxBorder,
     this.inputPadding = const EdgeInsets.symmetric(
       horizontal: 20,
       vertical: 16,
@@ -59,27 +51,32 @@ class DInputDropdown<T> extends StatefulWidget {
 
   /// radius for all corner (box wrapper)
   ///
-  /// default: 20
-  final double boxRadius;
+  /// default:
+  ///
+  /// `const BorderRadius.all(Radius.circular(20))`
+  final BorderRadius boxBorderRadius;
 
   /// background color
   ///
   /// default: Colors.grey.shade100
   final Color? boxColor;
 
-  /// styling for box border
+  /// styling for box border,
+  ///
+  /// will prioritize shapeBoxborder, if it's set
   ///
   /// default:
   /// ```dart
-  /// const Border.fromBorderSide(
-  ///   BorderSide(
-  ///     color: Colors.grey,
-  ///     width: 1,
-  ///     strokeAlign: BorderSide.strokeAlignOutside,
-  ///   ),
-  /// )
+  /// const BorderSide(
+  ///   color: Colors.grey,
+  ///   width: 1,
+  ///   strokeAlign: BorderSide.strokeAlignOutside,
+  /// ),
   /// ```
-  final BoxBorder? boxBorder;
+  final BorderSide? boxBorder;
+
+  /// default: RoundedRectangleBorder
+  final ShapeBorder? shapeBoxBorder;
 
   /// background color
   ///
@@ -89,15 +86,16 @@ class DInputDropdown<T> extends StatefulWidget {
   /// styling for box border
   ///
   /// ```dart
-  /// Border.fromBorderSide(
-  ///   BorderSide(
-  ///     color: Theme.of(context).primaryColor,
-  ///     width: 2,
-  ///     strokeAlign: BorderSide.strokeAlignOutside,
-  ///   ),
-  /// )
+  /// BorderSide(
+  ///   color: Theme.of(context).primaryColor,
+  ///   width: 2,
+  ///   strokeAlign: BorderSide.strokeAlignOutside,
+  /// ),
   /// ```
-  final BoxBorder? focusedBoxBorder;
+  final BorderSide? focusedBoxBorder;
+
+  /// default: RoundedRectangleBorder
+  final ShapeBorder? focusedShapeBoxBorder;
 
   /// contentPadding inside InputDecoration
   final EdgeInsetsGeometry inputPadding;
@@ -174,25 +172,38 @@ class DInputDropdown<T> extends StatefulWidget {
 
 class _DInputDropdownState<T> extends State<DInputDropdown<T>> {
   final listenFocus = ValueNotifier(false);
-  late final FocusNode localFocusNode;
+  FocusNode? localFocusNode;
+
+  void _listenLocalFocusNode() {
+    if (listenFocus.value == localFocusNode!.hasFocus) return;
+    listenFocus.value = localFocusNode!.hasFocus;
+  }
+
+  void _listenParentFocusNode() {
+    if (listenFocus.value == widget.inputFocusNode!.hasFocus) return;
+    listenFocus.value = widget.inputFocusNode!.hasFocus;
+  }
 
   @override
   void initState() {
-    localFocusNode = widget.inputFocusNode ?? FocusNode();
-    localFocusNode.addListener(() {
-      listenFocus.value = localFocusNode.hasFocus;
-      // log('.........................');
-      // log(widget.hint.toString());
-      // log('local focus node: ${localFocusNode.hasFocus}');
-      // log('.........................');
-    });
+    if (widget.inputFocusNode != null) {
+      widget.inputFocusNode!.addListener(_listenParentFocusNode);
+    } else {
+      localFocusNode = FocusNode();
+      localFocusNode!.addListener(_listenLocalFocusNode);
+    }
     super.initState();
   }
 
   @override
   void dispose() {
+    if (widget.inputFocusNode != null) {
+      widget.inputFocusNode!.removeListener(_listenParentFocusNode);
+    } else {
+      localFocusNode!.removeListener(_listenLocalFocusNode);
+      localFocusNode!.dispose();
+    }
     listenFocus.dispose();
-    localFocusNode.dispose();
     super.dispose();
   }
 
@@ -201,23 +212,32 @@ class _DInputDropdownState<T> extends State<DInputDropdown<T>> {
     final primaryColor = Theme.of(context).primaryColor;
 
     // setup box
+    final localBoxBorderRadius = widget.boxBorderRadius;
+
     final localBoxColor = widget.boxColor ?? Colors.grey.shade100;
     final localBoxBorder = widget.boxBorder ??
-        const Border.fromBorderSide(
-          BorderSide(
-            color: Colors.grey,
-            width: 1,
-            strokeAlign: BorderSide.strokeAlignOutside,
-          ),
+        const BorderSide(
+          color: Colors.grey,
+          width: 1,
+          strokeAlign: BorderSide.strokeAlignOutside,
         );
+    final localShapeBoxBorder = widget.shapeBoxBorder ??
+        RoundedRectangleBorder(
+          borderRadius: localBoxBorderRadius,
+          side: widget.noBoxBorder ? BorderSide.none : localBoxBorder,
+        );
+
     final localFocusedBoxColor = widget.focusedBoxColor ?? localBoxColor;
     final localFocusedBoxBorder = widget.focusedBoxBorder ??
-        Border.fromBorderSide(
-          BorderSide(
-            color: primaryColor,
-            width: 2,
-            strokeAlign: BorderSide.strokeAlignOutside,
-          ),
+        BorderSide(
+          color: primaryColor,
+          width: 2,
+          strokeAlign: BorderSide.strokeAlignOutside,
+        );
+    final localFocusedShapeBoxBorder = widget.focusedShapeBoxBorder ??
+        RoundedRectangleBorder(
+          borderRadius: localBoxBorderRadius,
+          side: widget.noBoxBorder ? BorderSide.none : localFocusedBoxBorder,
         );
 
     // setup input
@@ -241,20 +261,18 @@ class _DInputDropdownState<T> extends State<DInputDropdown<T>> {
           valueListenable: listenFocus,
           builder: (context, isFocus, child) {
             final color = isFocus ? localFocusedBoxColor : localBoxColor;
-            final border = isFocus ? localFocusedBoxBorder : localBoxBorder;
-            return DecoratedBox(
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(widget.boxRadius),
-                border: widget.noBoxBorder ? null : border,
-              ),
+            final shape =
+                isFocus ? localFocusedShapeBoxBorder : localShapeBoxBorder;
+            return Material(
+              shape: shape,
+              color: color,
               child: child,
             );
           },
           child: Row(
             crossAxisAlignment: widget.crossAxisAlignmentBox,
             children: [
-              widget.prefixIcon.build(context, widget.boxRadius),
+              widget.prefixIcon.build(context),
               if (widget.leftChildren != null) ...widget.leftChildren!,
               Expanded(
                 child: Padding(
@@ -264,11 +282,11 @@ class _DInputDropdownState<T> extends State<DInputDropdown<T>> {
                     items: widget.items,
                     style: widget.inputStyle,
                     onChanged: widget.inputOnChanged,
-                    borderRadius: BorderRadius.circular(widget.boxRadius),
+                    borderRadius: widget.boxBorderRadius,
                     itemHeight: widget.itemHeight,
                     menuMaxHeight: widget.menuMaxHeight,
                     icon: widget.icon,
-                    focusNode: localFocusNode,
+                    focusNode: widget.inputFocusNode ?? localFocusNode,
                     dropdownColor: widget.dropdownColor ??
                         Theme.of(context).colorScheme.surfaceContainer,
                     decoration: InputDecoration(
@@ -287,7 +305,7 @@ class _DInputDropdownState<T> extends State<DInputDropdown<T>> {
                 ),
               ),
               if (widget.rightChildren != null) ...widget.rightChildren!,
-              widget.suffixIcon.build(context, widget.boxRadius),
+              widget.suffixIcon.build(context),
             ],
           ),
         ),
