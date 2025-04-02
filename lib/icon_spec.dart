@@ -63,4 +63,32 @@ class IconSpec {
       ),
     );
   }
+
+  IconSpec copyWith({
+    IconData? icon,
+    String? iconAsset,
+    double? iconSize,
+    Color? color,
+    Color? backgroundColor,
+    Size? boxSize,
+    Alignment? alignment,
+    void Function()? onTap,
+    BorderRadius? borderRadius,
+    Color? splashColor,
+    EdgeInsetsGeometry? margin,
+  }) {
+    return IconSpec(
+      icon: icon ?? this.icon,
+      iconAsset: iconAsset ?? this.iconAsset,
+      iconSize: iconSize ?? this.iconSize,
+      color: color ?? this.color,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      boxSize: boxSize ?? this.boxSize,
+      alignment: alignment ?? this.alignment,
+      onTap: onTap ?? this.onTap,
+      borderRadius: borderRadius ?? this.borderRadius,
+      splashColor: splashColor ?? this.splashColor,
+      margin: margin ?? this.margin,
+    );
+  }
 }

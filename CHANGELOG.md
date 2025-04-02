@@ -1,3 +1,24 @@
+## 1.3.0
+
+New Widget:
+
+- DInputImage
+- DInputDate
+- DInputTime
+
+Add Package:
+
+- [image_picker](https://pub.dev/packages/image_picker)
+- [intl](https://pub.dev/packages/intl)
+
+IconSpec:
+
+- copyWith()
+
+hintStyle:
+
+- color: Colors.grey,
+
 ## 1.0.0
 
 - Basic Input Widget Removed

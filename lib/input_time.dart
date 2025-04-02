@@ -1,10 +1,19 @@
 part of 'd_input.dart';
 
-class DInput extends StatefulWidget {
-  const DInput({
+enum InputTimeComposition { field, picker }
+
+class DInputTime extends StatefulWidget {
+  const DInputTime({
     super.key,
-    this.controller,
-    this.enabled,
+    required this.controller,
+    required this.timePicked,
+    this.initialTime,
+    this.composition = (
+      InputDateComposition.field,
+      InputDateComposition.picker,
+    ),
+    this.compositionVisibility = (true, true),
+    this.enabled = true,
     this.noBoxBorder = false,
     this.boxBorderRadius = const BorderRadius.all(Radius.circular(20)),
     this.boxColor,
@@ -26,7 +35,7 @@ class DInput extends StatefulWidget {
     this.inputOnChanged,
     this.inputOnFieldSubmitted,
     this.inputOnTap,
-    this.hint,
+    this.hint = 'Choose Time',
     this.hintStyle = const TextStyle(
       fontWeight: FontWeight.w400,
       fontSize: 14,
@@ -36,25 +45,40 @@ class DInput extends StatefulWidget {
     this.titleStyle =
         const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     this.titleGap = 12,
-    this.prefixIcon = const IconSpec(),
-    this.suffixIcon = const IconSpec(),
-    this.leftChildren,
-    this.rightChildren,
+    this.pickerIcon = const IconSpec(
+      icon: Icons.access_time,
+    ),
     this.crossAxisAlignmentTitle = CrossAxisAlignment.start,
     this.crossAxisAlignmentBox = CrossAxisAlignment.center,
     this.minLine = 1,
     this.maxLine = 1,
     this.obscureChar = '●',
     this.obscure = false,
-    this.keyboardType,
-    this.keyboardAppearance,
   });
 
   /// controll input
-  final TextEditingController? controller;
+  final TextEditingController controller;
+
+  /// default: now
+  final TimeOfDay? initialTime;
+
+  final void Function(TimeOfDay? time) timePicked;
+
+  /// default:
+  ///
+  /// ```
+  /// (InputDateComposition.field, InputDateComposition.picker)
+  /// ```
+  final (
+    InputDateComposition a,
+    InputDateComposition b,
+  ) composition;
+
+  /// default: (true, true, true, true)
+  final (bool a, bool b) compositionVisibility;
 
   /// default: true
-  final bool? enabled;
+  final bool enabled;
 
   /// default: false
   final bool noBoxBorder;
@@ -138,7 +162,8 @@ class DInput extends StatefulWidget {
   final FocusNode? inputFocusNode;
 
   /// hint TextFormField
-  final String? hint;
+  /// default: Choose Image
+  final String hint;
 
   /// styling hint text
   final TextStyle hintStyle;
@@ -158,17 +183,15 @@ class DInput extends StatefulWidget {
   /// for text area, combine with `minLine`
   final int maxLine;
 
-  /// Icon on left
-  final IconSpec prefixIcon;
-
-  /// Icon on right
-  final IconSpec suffixIcon;
-
-  /// add widget after prefix
-  final List<Widget>? leftChildren;
-
-  /// add widget before suffix
-  final List<Widget>? rightChildren;
+  /// Icon for time picker
+  ///
+  /// Action property will be disabled
+  ///
+  /// default:
+  /// ```
+  /// const IconSpec(icon: Icons.access_time)
+  /// ```
+  final IconSpec pickerIcon;
 
   /// arrange title and box input
   final CrossAxisAlignment crossAxisAlignmentTitle;
@@ -184,15 +207,11 @@ class DInput extends StatefulWidget {
   /// hide char or not
   final bool obscure;
 
-  final TextInputType? keyboardType;
-
-  final Brightness? keyboardAppearance;
-
   @override
-  State<DInput> createState() => _DInputState();
+  State<DInputTime> createState() => _DInputTimeState();
 }
 
-class _DInputState extends State<DInput> {
+class _DInputTimeState extends State<DInputTime> {
   final listenFocus = ValueNotifier(false);
   FocusNode? localFocusNode;
 
@@ -204,6 +223,20 @@ class _DInputState extends State<DInput> {
   void _listenParentFocusNode() {
     if (listenFocus.value == widget.inputFocusNode!.hasFocus) return;
     listenFocus.value = widget.inputFocusNode!.hasFocus;
+  }
+
+  void pickTime() async {
+    final now = TimeOfDay.now();
+    final localInitialTime = widget.initialTime ?? now;
+
+    final result = await showTimePicker(
+      context: context,
+      initialTime: localInitialTime,
+    );
+    if (result == null) return widget.timePicked(result);
+
+    if (mounted) widget.controller.text = result.format(context);
+    widget.timePicked(result);
   }
 
   @override
@@ -262,12 +295,6 @@ class _DInputState extends State<DInput> {
           side: widget.noBoxBorder ? BorderSide.none : localFocusedBoxBorder,
         );
 
-    // setup input
-    final localInputBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(widget.inputRadius),
-      borderSide: widget.inputBorderSide,
-    );
-
     return Column(
       crossAxisAlignment: widget.crossAxisAlignmentTitle,
       children: [
@@ -294,48 +321,64 @@ class _DInputState extends State<DInput> {
           child: Row(
             crossAxisAlignment: widget.crossAxisAlignmentBox,
             children: [
-              widget.prefixIcon.build(context),
-              if (widget.leftChildren != null) ...widget.leftChildren!,
-              Expanded(
-                child: Padding(
-                  padding: widget.inputMargin,
-                  child: TextFormField(
-                    controller: widget.controller,
-                    style: widget.inputStyle,
-                    minLines: widget.minLine,
-                    maxLines: widget.maxLine,
-                    onTap: widget.inputOnTap,
-                    onChanged: widget.inputOnChanged,
-                    onFieldSubmitted: widget.inputOnFieldSubmitted,
-                    focusNode: widget.inputFocusNode ?? localFocusNode,
-                    obscureText: widget.obscure,
-                    obscuringCharacter: widget.obscureChar,
-                    keyboardType: widget.keyboardType,
-                    keyboardAppearance: widget.keyboardAppearance,
-                    decoration: InputDecoration(
-                      hintText: widget.hint,
-                      hintStyle: widget.hintStyle,
-                      filled: widget.inputBackgroundColor != null,
-                      fillColor: widget.inputBackgroundColor,
-                      isDense: true,
-                      contentPadding: widget.inputPadding,
-                      border: localInputBorder,
-                      errorBorder: localInputBorder,
-                      enabledBorder: localInputBorder,
-                      focusedBorder: localInputBorder,
-                      disabledBorder: localInputBorder,
-                      focusedErrorBorder: localInputBorder,
-                    ),
-                    enabled: widget.enabled,
-                  ),
-                ),
-              ),
-              if (widget.rightChildren != null) ...widget.rightChildren!,
-              widget.suffixIcon.build(context),
+              buildComposition(
+                  widget.composition.$1, widget.compositionVisibility.$1),
+              buildComposition(
+                  widget.composition.$2, widget.compositionVisibility.$2),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget buildComposition(InputDateComposition? composition, bool visible) {
+    if (!visible) return const SizedBox();
+    return switch (composition) {
+      InputDateComposition.field => buildInputField(),
+      InputDateComposition.picker =>
+        widget.pickerIcon.copyWith(onTap: pickTime).build(context),
+      _ => const SizedBox(),
+    };
+  }
+
+  Expanded buildInputField() {
+    // setup input
+    final localInputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(widget.inputRadius),
+      borderSide: widget.inputBorderSide,
+    );
+    return Expanded(
+      child: Padding(
+        padding: widget.inputMargin,
+        child: TextFormField(
+          controller: widget.controller,
+          style: widget.inputStyle,
+          minLines: widget.minLine,
+          maxLines: widget.maxLine,
+          onTap: widget.inputOnTap,
+          onChanged: widget.inputOnChanged,
+          onFieldSubmitted: widget.inputOnFieldSubmitted,
+          focusNode: widget.inputFocusNode ?? localFocusNode,
+          obscureText: widget.obscure,
+          obscuringCharacter: widget.obscureChar,
+          decoration: InputDecoration(
+            hintText: widget.hint,
+            hintStyle: widget.hintStyle,
+            filled: widget.inputBackgroundColor != null,
+            fillColor: widget.inputBackgroundColor,
+            isDense: true,
+            contentPadding: widget.inputPadding,
+            border: localInputBorder,
+            errorBorder: localInputBorder,
+            enabledBorder: localInputBorder,
+            focusedBorder: localInputBorder,
+            disabledBorder: localInputBorder,
+            focusedErrorBorder: localInputBorder,
+          ),
+          enabled: widget.enabled,
+        ),
+      ),
     );
   }
 }

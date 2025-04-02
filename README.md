@@ -2,6 +2,8 @@ D'Input is a package that provide input widget to build faster input with defaul
 
 ## Usage
 
+### Input Basic
+
 ![alt](pic/d_input.png)
 
 ```dart
@@ -36,6 +38,46 @@ DInput(
     vertical: 12,
   ),
   inputRadius: 10,
+),
+```
+
+### Input Image
+
+![alt](pic/d_input_image.png)
+
+```dart
+DInputImage(
+  controller: controllerTest,
+  imagePicker: ImagePicker(),
+  imagePicked: (xFile) {
+    print('xFile = ${xFile?.name}');
+  },
+),
+```
+
+### Input Date
+
+![alt](pic/d_input_date.png)
+
+```dart
+DInputDate(
+  controller: TextEditingController(),
+  datePicked: (date) {
+    print('date = ${date.toString()}');
+  },
+),
+```
+
+### Input Time
+
+![alt](pic/d_input_time.png)
+
+```dart
+DInputTime(
+  controller: TextEditingController(),
+  timePicked: (time) {
+    print('time = ${time?.format(context)}');
+  },
 ),
 ```
 
