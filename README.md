@@ -47,8 +47,7 @@ DInput(
 
 ```dart
 DInputImage(
-  controller: controllerTest,
-  imagePicker: ImagePicker(),
+  controller: TextEditingController(),
   imagePicked: (xFile) {
     print('xFile = ${xFile?.name}');
   },
@@ -77,6 +76,19 @@ DInputTime(
   controller: TextEditingController(),
   timePicked: (time) {
     print('time = ${time?.format(context)}');
+  },
+),
+```
+
+### Input File
+
+![alt](pic/d_input_file.png)
+
+```dart
+DInputFile(
+  controller: TextEditingController(),
+  filePicked: (xFile) {
+    print('xFile = ${xFile?.name}');
   },
 ),
 ```

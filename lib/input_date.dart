@@ -81,13 +81,20 @@ class DInputDate extends StatefulWidget {
   /// ```
   /// (InputDateComposition.field, InputDateComposition.picker)
   /// ```
-  final (
-    InputDateComposition a,
-    InputDateComposition b,
-  ) composition;
+  final (InputDateComposition, InputDateComposition) composition;
 
   /// default: (true, true, true, true)
-  final (bool a, bool b) compositionVisibility;
+  final (bool, bool) compositionVisibility;
+
+  /// Icon for date picker
+  ///
+  /// Action property will be disabled
+  ///
+  /// default:
+  /// ```
+  /// const IconSpec(icon: Icons.event)
+  /// ```
+  final IconSpec pickerIcon;
 
   /// default: true
   final bool enabled;
@@ -195,16 +202,6 @@ class DInputDate extends StatefulWidget {
   /// for text area, combine with `minLine`
   final int maxLine;
 
-  /// Icon for date picker
-  ///
-  /// Action property will be disabled
-  ///
-  /// default:
-  /// ```
-  /// const IconSpec(icon: Icons.event)
-  /// ```
-  final IconSpec pickerIcon;
-
   /// arrange title and box input
   final CrossAxisAlignment crossAxisAlignmentTitle;
 
@@ -251,9 +248,11 @@ class _DInputDateState extends State<DInputDate> {
       firstDate: localFirstDate,
       lastDate: localLastDate,
     );
-    if (result == null) return widget.datePicked(result);
 
-    widget.controller.text = localDateFormat.format(result);
+    if (result != null) {
+      widget.controller.text = localDateFormat.format(result);
+    }
+
     widget.datePicked(result);
   }
 

@@ -1,23 +1,36 @@
 part of 'd_input.dart';
 
-enum InputImageComposition { fileName, camera, gallery, visibility }
+enum InputFileComposition { icon, field, picker }
 
-class DInputImage extends StatefulWidget {
-  const DInputImage({
+class DInputFile extends StatefulWidget {
+  const DInputFile({
     super.key,
     required this.controller,
-    required this.imagePicked,
-    this.imagePicker,
-    this.imageView,
-    this.imageGap = 8,
+    required this.filePicked,
+    this.filePicker,
     this.composition = (
-      InputImageComposition.visibility,
-      InputImageComposition.fileName,
-      InputImageComposition.camera,
-      InputImageComposition.gallery
+      InputFileComposition.icon,
+      InputFileComposition.field,
+      InputFileComposition.picker,
     ),
-    this.compositionVisibility = (true, true, true, true),
-    this.showImage = true,
+    this.compositionVisibility = (true, true, true),
+    this.pickerIcon = const IconSpec(
+      icon: Icons.file_open,
+    ),
+    this.allowedExtensions = const [
+      'txt',
+      'doc',
+      'docx',
+      'csv',
+      'xls',
+      'xlsx',
+      'ppt',
+      'pptx',
+      'pdf',
+      'zip',
+      'rar',
+      '7z'
+    ],
     this.enabled = false,
     this.noBoxBorder = false,
     this.boxBorderRadius = const BorderRadius.all(Radius.circular(20)),
@@ -28,6 +41,7 @@ class DInputImage extends StatefulWidget {
     this.focusedBoxBorder,
     this.focusedShapeBoxBorder,
     this.inputPadding = const EdgeInsets.symmetric(
+      horizontal: 20,
       vertical: 16,
     ),
     this.inputMargin = const EdgeInsets.all(0),
@@ -39,7 +53,7 @@ class DInputImage extends StatefulWidget {
     this.inputOnChanged,
     this.inputOnFieldSubmitted,
     this.inputOnTap,
-    this.hint = 'Choose Image',
+    this.hint = 'Choose File',
     this.hintStyle = const TextStyle(
       fontWeight: FontWeight.w400,
       fontSize: 14,
@@ -49,18 +63,6 @@ class DInputImage extends StatefulWidget {
     this.titleStyle =
         const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     this.titleGap = 12,
-    this.visibilityIcon = const IconSpec(
-      icon: Icons.visibility,
-    ),
-    this.visibilityOffIcon = const IconSpec(
-      icon: Icons.visibility_off,
-    ),
-    this.cameraIcon = const IconSpec(
-      icon: Icons.photo_camera,
-    ),
-    this.galleryIcon = const IconSpec(
-      icon: Icons.photo_library,
-    ),
     this.crossAxisAlignmentTitle = CrossAxisAlignment.start,
     this.crossAxisAlignmentBox = CrossAxisAlignment.center,
     this.minLine = 1,
@@ -72,75 +74,38 @@ class DInputImage extends StatefulWidget {
   /// controll input
   final TextEditingController controller;
 
-  /// from package [image_picker](https://pub.dev/packages/image_picker)
+  final void Function(XFile? xFile) filePicked;
+
+  /// from package [file_picker](https://pub.dev/packages/file_picker)
   ///
-  /// default: ImagePicker()
-  final ImagePicker? imagePicker;
-
-  final void Function(XFile? xFile) imagePicked;
-
-  final Widget Function(XFile? xFile)? imageView;
-
-  /// default: 8
-  final double imageGap;
+  /// default: FilePicker.platform
+  final FilePicker? filePicker;
 
   /// default:
   ///
   /// ```
-  /// (InputImageComposition.fileName, InputImageComposition.camera, InputImageComposition.gallery)
+  /// (InputDateComposition.field, InputDateComposition.picker)
   /// ```
   final (
-    InputImageComposition,
-    InputImageComposition,
-    InputImageComposition,
-    InputImageComposition,
+    InputFileComposition,
+    InputFileComposition,
+    InputFileComposition,
   ) composition;
 
   /// default: (true, true, true, true)
-  final (bool, bool, bool, bool) compositionVisibility;
+  final (bool, bool, bool) compositionVisibility;
 
-  /// Icon for visibility
+  /// Icon for file picker
   ///
   /// Action property will be disabled
   ///
   /// default:
   /// ```
-  /// const IconSpec(icon: Icons.visibility)
+  /// const IconSpec(icon: Icons.file_open)
   /// ```
-  final IconSpec visibilityIcon;
+  final IconSpec pickerIcon;
 
-  /// Icon for visibility off
-  ///
-  /// Action property will be disabled
-  ///
-  /// default:
-  /// ```
-  /// const IconSpec(icon: Icons.visibility_off)
-  /// ```
-  final IconSpec visibilityOffIcon;
-
-  /// Icon for camera
-  ///
-  /// Action property will be disabled
-  ///
-  /// default:
-  /// ```
-  /// const IconSpec(icon: Icons.photo_camera)
-  /// ```
-  final IconSpec cameraIcon;
-
-  /// Icon gallery
-  ///
-  /// Action property will be disabled
-  ///
-  /// default:
-  /// ```dart
-  /// const IconSpec(icon: Icons.photo_library)
-  /// ```
-  final IconSpec galleryIcon;
-
-  /// default: true
-  final bool showImage;
+  final List<String> allowedExtensions;
 
   /// default: false
   final bool enabled;
@@ -263,14 +228,12 @@ class DInputImage extends StatefulWidget {
   final bool obscure;
 
   @override
-  State<DInputImage> createState() => _DInputImageState();
+  State<DInputFile> createState() => _DInputFileState();
 }
 
-class _DInputImageState extends State<DInputImage> {
+class _DInputFileState extends State<DInputFile> {
   final listenFocus = ValueNotifier(false);
   FocusNode? localFocusNode;
-  final ValueNotifier<XFile?> xFilePicked = ValueNotifier(null);
-  final localShowImage = ValueNotifier(true);
 
   void _listenLocalFocusNode() {
     if (listenFocus.value == localFocusNode!.hasFocus) return;
@@ -282,16 +245,18 @@ class _DInputImageState extends State<DInputImage> {
     listenFocus.value = widget.inputFocusNode!.hasFocus;
   }
 
-  void pickImage(ImageSource source) async {
-    final result =
-        await (widget.imagePicker ?? ImagePicker()).pickImage(source: source);
+  void pickFile() async {
+    final result = await (widget.filePicker ?? FilePicker.platform).pickFiles(
+      type: FileType.custom,
+      allowedExtensions: widget.allowedExtensions,
+    );
 
-    if (result != null) {
-      xFilePicked.value = result;
-      widget.controller.text = result.name;
+    final xFile = result?.xFiles.single;
+    if (xFile != null) {
+      widget.controller.text = xFile.name;
     }
 
-    widget.imagePicked(result);
+    widget.filePicked(xFile);
   }
 
   @override
@@ -302,7 +267,6 @@ class _DInputImageState extends State<DInputImage> {
       localFocusNode = FocusNode();
       localFocusNode!.addListener(_listenLocalFocusNode);
     }
-    localShowImage.value = widget.showImage;
     super.initState();
   }
 
@@ -315,13 +279,13 @@ class _DInputImageState extends State<DInputImage> {
       localFocusNode!.dispose();
     }
     listenFocus.dispose();
-    xFilePicked.dispose();
-    localShowImage.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    assert(widget.allowedExtensions.isNotEmpty);
+
     final primaryColor = Theme.of(context).primaryColor;
 
     // setup box
@@ -385,76 +349,19 @@ class _DInputImageState extends State<DInputImage> {
                   widget.composition.$2, widget.compositionVisibility.$2),
               buildComposition(
                   widget.composition.$3, widget.compositionVisibility.$3),
-              buildComposition(
-                  widget.composition.$4, widget.compositionVisibility.$4),
             ],
           ),
         ),
-        if (widget.showImage)
-          Padding(
-            padding: EdgeInsets.only(top: widget.imageGap),
-            child: ValueListenableBuilder(
-              valueListenable: localShowImage,
-              builder: (context, show, child) {
-                if (!show) return const SizedBox();
-                return ValueListenableBuilder(
-                  valueListenable: xFilePicked,
-                  builder: (context, xFile, child) {
-                    if (widget.imageView == null) {
-                      if (xFile == null) return const SizedBox();
-                      return FutureBuilder(
-                        future: xFile.readAsBytes(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState !=
-                              ConnectionState.done) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          return Image.memory(
-                            snapshot.data!,
-                            width: 192,
-                            height: 192,
-                          );
-                        },
-                      );
-                    }
-                    return widget.imageView!(xFile);
-                  },
-                );
-              },
-            ),
-          )
       ],
     );
   }
 
-  Widget buildComposition(InputImageComposition? composition, bool visible) {
+  Widget buildComposition(InputFileComposition? composition, bool visible) {
     if (!visible) return const SizedBox();
     return switch (composition) {
-      InputImageComposition.fileName => buildInputField(),
-      InputImageComposition.camera => widget.cameraIcon
-          .copyWith(
-            onTap: () => pickImage(ImageSource.camera),
-          )
-          .build(context),
-      InputImageComposition.gallery => widget.galleryIcon
-          .copyWith(
-            onTap: () => pickImage(ImageSource.gallery),
-          )
-          .build(context),
-      InputImageComposition.visibility => ValueListenableBuilder(
-          valueListenable: localShowImage,
-          builder: (context, show, child) {
-            final iconSpec =
-                show ? widget.visibilityIcon : widget.visibilityOffIcon;
-            return iconSpec
-                .copyWith(
-                  onTap: () => localShowImage.value = !localShowImage.value,
-                )
-                .build(context);
-          },
-        ),
+      InputFileComposition.field => buildInputField(),
+      InputFileComposition.picker =>
+        widget.pickerIcon.copyWith(onTap: pickFile).build(context),
       _ => const SizedBox(),
     };
   }

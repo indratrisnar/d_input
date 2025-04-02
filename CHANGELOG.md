@@ -1,3 +1,13 @@
+## 1.4.0
+
+New Widget:
+
+- DInputFile
+
+Add Package:
+
+- [file_picker](https://pub.dev/packages/file_picker)
+
 ## 1.3.0
 
 New Widget:

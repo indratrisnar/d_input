@@ -69,13 +69,20 @@ class DInputTime extends StatefulWidget {
   /// ```
   /// (InputDateComposition.field, InputDateComposition.picker)
   /// ```
-  final (
-    InputDateComposition a,
-    InputDateComposition b,
-  ) composition;
+  final (InputDateComposition, InputDateComposition) composition;
 
   /// default: (true, true, true, true)
-  final (bool a, bool b) compositionVisibility;
+  final (bool, bool) compositionVisibility;
+
+  /// Icon for time picker
+  ///
+  /// Action property will be disabled
+  ///
+  /// default:
+  /// ```
+  /// const IconSpec(icon: Icons.access_time)
+  /// ```
+  final IconSpec pickerIcon;
 
   /// default: true
   final bool enabled;
@@ -183,16 +190,6 @@ class DInputTime extends StatefulWidget {
   /// for text area, combine with `minLine`
   final int maxLine;
 
-  /// Icon for time picker
-  ///
-  /// Action property will be disabled
-  ///
-  /// default:
-  /// ```
-  /// const IconSpec(icon: Icons.access_time)
-  /// ```
-  final IconSpec pickerIcon;
-
   /// arrange title and box input
   final CrossAxisAlignment crossAxisAlignmentTitle;
 
@@ -233,9 +230,11 @@ class _DInputTimeState extends State<DInputTime> {
       context: context,
       initialTime: localInitialTime,
     );
-    if (result == null) return widget.timePicked(result);
 
-    if (mounted) widget.controller.text = result.format(context);
+    if (result != null) {
+      if (mounted) widget.controller.text = result.format(context);
+    }
+
     widget.timePicked(result);
   }
 
