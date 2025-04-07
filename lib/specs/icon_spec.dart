@@ -1,4 +1,4 @@
-part of 'd_input.dart';
+part of '../d_input.dart';
 
 class IconSpec {
   final IconData? icon;
@@ -9,11 +9,11 @@ class IconSpec {
   final Size boxSize;
   final Alignment alignment;
   final void Function()? onTap;
-
-  /// will ignore `radius`
   final BorderRadius? borderRadius;
   final Color? splashColor;
   final EdgeInsetsGeometry margin;
+  final double elevation;
+  final Color? shadowColor;
 
   const IconSpec({
     this.icon,
@@ -27,6 +27,8 @@ class IconSpec {
     this.borderRadius = const BorderRadius.all(Radius.circular(20)),
     this.splashColor,
     this.margin = const EdgeInsets.all(0),
+    this.elevation = 0.0,
+    this.shadowColor,
   });
 
   Widget build(BuildContext context) {
@@ -37,6 +39,8 @@ class IconSpec {
       child: Material(
         color: backgroundColor,
         borderRadius: borderRadius,
+        elevation: elevation,
+        shadowColor: shadowColor,
         child: InkWell(
           onTap: onTap,
           borderRadius: borderRadius,

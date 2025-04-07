@@ -1,3 +1,16 @@
+## 2.0.0
+
+- New Style Property
+  - Box Spec
+  - Dropdown Spec
+  - Icon Spec
+  - Input Spec
+  - Title Spec
+- New Widget
+  - InputMultiImage
+- Debug
+  - Now you can use built-in debug print using `debugInput()` function
+
 ## 1.4.0
 
 New Widget:
